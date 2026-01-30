@@ -27,27 +27,28 @@ struct tile
 	int y;
 	int id;
 };
-
+// fonction qui dessine la tête du serpent et sa queue
 void drawSnake()
 {
-	display.fillRect(Color::DARKGREEN, 50, 50, 10, 10);
+	display.fillRect(Color::DARKGREEN, 50, 50, 10, 10); // Tête du serpent
 	display.fillRect(Color::GREEN, 40, 50, 10, 10);
 }
-
+// génère aléatoirement un ligne
 int rowID()
 {
 	return ((rand() % 31)*10);
 }
+// génère aléatoirement une colonne
 int columnID()
 {
 	return ((rand() % 23)*10);
 }
-
+// génère aléatoirement une couleur
 int colorID()
 {
 	return (rand() % 4);
 }
-
+// Permet de récupérer une couleur
 Color getFruitColor()
 {
 	int color = colorID() ;
@@ -59,7 +60,7 @@ Color getFruitColor()
 		case 3 : return Color::RED;
 		}
 }
-
+// Fonction permettant d'afficher un fruit avec la bonne couleur
 void drawFruits()
 {
 	int rowIDs[10], columnIDs[10], x, y;
