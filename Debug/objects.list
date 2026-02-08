@@ -1,3 +1,4 @@
+"./Core/Src/Graphics/Graphics/GraphObjects/Snake.o"
 "./Core/Src/Interfaces/Display/Sprite.o"
 "./Core/Src/NucleoImp/Display/ILI9341Display.o"
 "./Core/Src/NucleoImp/Display/ili9341.o"

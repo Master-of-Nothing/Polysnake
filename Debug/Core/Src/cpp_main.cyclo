@@ -1,12 +1,10 @@
-/opt/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/arm-none-eabi/include/c++/13.3.1/arm-none-eabi/thumb/v7e-m+fp/hard/bits/gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
-../Core/Src/cpp_main.cpp:31:6:void drawSnake()	1
-../Core/Src/cpp_main.cpp:37:5:int rowID()	1
-../Core/Src/cpp_main.cpp:42:5:int columnID()	1
-../Core/Src/cpp_main.cpp:47:5:int colorID()	1
-../Core/Src/cpp_main.cpp:52:7:ELE3312::Color getFruitColor()	4
-../Core/Src/cpp_main.cpp:64:6:void drawFruits()	2
-../Core/Src/cpp_main.cpp:77:6:void cpp_main(peripheral_handles*)	1
-../Core/Src/cpp_main.cpp:84:1:void __static_initialization_and_destruction_0()	1
-../Core/Src/cpp_main.cpp:84:1:void __static_initialization_and_destruction_1()	1
-../Core/Src/cpp_main.cpp:84:1:cpp)	1
-../Core/Src/cpp_main.cpp:84:1:cpp)	1
+/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.macos64_1.0.0.202411102158/tools/arm-none-eabi/include/c++/13.3.1/arm-none-eabi/thumb/v7e-m+fp/hard/bits/gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
+../Core/Src/cpp_main.cpp:44:7:ELE3312::Color colorType(int)	7
+../Core/Src/cpp_main.cpp:57:6:void drawTile(tile)	1
+../Core/Src/cpp_main.cpp:62:6:void drawSnake()	1
+../Core/Src/cpp_main.cpp:69:6:void drawFruits()	2
+../Core/Src/cpp_main.cpp:80:6:void cpp_main(peripheral_handles*)	1
+../Core/Src/cpp_main.cpp:90:1:void __static_initialization_and_destruction_0()	1
+../Core/Src/cpp_main.cpp:90:1:void __static_initialization_and_destruction_1()	1
+../Core/Src/cpp_main.cpp:90:1:cpp)	1
+../Core/Src/cpp_main.cpp:90:1:cpp)	1

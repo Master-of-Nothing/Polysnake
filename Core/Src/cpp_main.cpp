@@ -16,6 +16,7 @@
 #include "main.h"
 #include <cpp_main.h>
 #include <NucleoImp/Display/ILI9341Display.h>
+//#include <Game/Graphics/GraphObjects/Snake.h>
 
 using namespace ELE3312;
 
@@ -27,50 +28,52 @@ struct tile
 	int y;
 	int id;
 };
-// fonction qui dessine la tête du serpent et sa queue
+
+
+enum tileType
+{
+	Vide = 0,
+	SnakeHead = 1,
+	SnakeBody = 2,
+	FruitYellow = 3,
+	FruitRed = 4,
+	FruitPurple = 5,
+	FruitOrange = 6
+};
+
+Color colorType(int id) {
+	switch (id)
+	{
+	case 0 : return Color::BLACK;
+	case 1 : return Color::DARKGREEN;
+	case 2 : return Color::GREEN;
+	case 3 : return Color::YELLOW;
+	case 4 : return Color::RED;
+	case 5 : return Color::PURPLE;
+	case 6 : return Color::ORANGE;
+	}
+}
+
+void drawTile(tile t)
+{
+	display.fillRect(colorType(t.id), t.x * 10, t.y * 10, 10, 10);
+}
+
 void drawSnake()
 {
-	display.fillRect(Color::DARKGREEN, 50, 50, 10, 10); // Tête du serpent
-	display.fillRect(Color::GREEN, 40, 50, 10, 10);
+	drawTile({3, 5, SnakeBody});
+	drawTile({4, 5, SnakeBody});
+	drawTile({5, 5, SnakeHead});
 }
-// génère aléatoirement un ligne
-int rowID()
-{
-	return ((rand() % 31)*10);
-}
-// génère aléatoirement une colonne
-int columnID()
-{
-	return ((rand() % 23)*10);
-}
-// génère aléatoirement une couleur
-int colorID()
-{
-	return (rand() % 4);
-}
-// Permet de récupérer une couleur
-Color getFruitColor()
-{
-	int color = colorID() ;
-		switch (color)
-		{
-		case 0 : return Color::YELLOW;
-		case 1 : return Color::ORANGE;
-		case 2 : return Color::PURPLE;
-		case 3 : return Color::RED;
-		}
-}
-// Fonction permettant d'afficher un fruit avec la bonne couleur
+
 void drawFruits()
 {
-	int rowIDs[10], columnIDs[10], x, y;
-	Color colors[5], color;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 12; i++)
 	{
-		rowIDs[i] = rowID();
-		columnIDs[i] = columnID();
-		colors[i] = getFruitColor();
-		display.fillRect(colors[i], rowIDs[i], columnIDs[i], 10, 10);
+		int rowID = rand() % 23;
+		int columnID = rand() % 31;
+		int fruitID = 3 + (rand() % 4);
+		drawTile({rowID, columnID, fruitID});
 	}
 }
 
@@ -80,5 +83,8 @@ void cpp_main(peripheral_handles *handles)
 	display.clearScreen();
 	drawFruits();
 	drawSnake();
-	while(1){};
+//	Snake snake(&display);
+//	snake.draw();
+	while(1)
+	{};
 }

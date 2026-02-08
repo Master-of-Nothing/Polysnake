@@ -13,6 +13,7 @@ RM := rm -rf
 -include Core/Startup/subdir.mk
 -include Core/Src/NucleoImp/Display/subdir.mk
 -include Core/Src/Interfaces/Display/subdir.mk
+-include Core/Src/Graphics/Graphics/GraphObjects/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 
@@ -86,8 +87,8 @@ all: main-build
 main-build: PolySnake.elf secondary-outputs
 
 # Tool invocations
-PolySnake.elf PolySnake.map: $(OBJS) $(USER_OBJS) /home/thom/Documents/ele3312/Polysnake/STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "PolySnake.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/thom/Documents/ele3312/Polysnake/STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PolySnake.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+PolySnake.elf PolySnake.map: $(OBJS) $(USER_OBJS) /Users/florencepaquet/Desktop/H26/Polysnake/Polysnake/STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "PolySnake.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/florencepaquet/Desktop/H26/Polysnake/Polysnake/STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PolySnake.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
