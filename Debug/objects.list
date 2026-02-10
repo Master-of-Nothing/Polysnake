@@ -1,4 +1,7 @@
-"./Core/Src/Graphics/Graphics/GraphObjects/Snake.o"
+"./Core/Src/Game/Game.o"
+"./Core/Src/Game/Graphics/Graphics/GraphObjects/Fruit.o"
+"./Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.o"
+"./Core/Src/Game/Graphics/Graphics/GraphObjects.o"
 "./Core/Src/Interfaces/Display/Sprite.o"
 "./Core/Src/NucleoImp/Display/ILI9341Display.o"
 "./Core/Src/NucleoImp/Display/ili9341.o"

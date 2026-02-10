@@ -1,3 +1,0 @@
-../Core/Src/Graphics/Graphics/GraphObjects/Snake.cpp:6:1:ELE3312::Snake::Snake(ELE3312::ILI9341Display*)	1
-../Core/Src/Graphics/Graphics/GraphObjects/Snake.cpp:11:6:void ELE3312::Snake::draw()	1
-../Core/Src/Graphics/Graphics/GraphObjects/Snake.cpp:16:6:void ELE3312::Snake::clear()	1
