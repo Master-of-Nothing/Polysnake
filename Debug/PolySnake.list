@@ -1271,7 +1271,7 @@ Fruit::Fruit(ILI9341Display* display)
  8000f8a:	60fb      	str	r3, [r7, #12]
  8000f8c:	e052      	b.n	8001034 <_ZN7ELE33125FruitC1EPNS_14ILI9341DisplayE+0xbc>
     {
-    	fruits[i].x = (rand() % 31)*10 + i * TILE_SIZE;
+    	fruits[i].x = (rand() % 31) * 10 + i * TILE_SIZE;
  8000f8e:	f00c f895 	bl	800d0bc <rand>
  8000f92:	4602      	mov	r2, r0
  8000f94:	4b2b      	ldr	r3, [pc, #172]	@ (8001044 <_ZN7ELE33125FruitC1EPNS_14ILI9341DisplayE+0xcc>)
@@ -1300,7 +1300,7 @@ Fruit::Fruit(ILI9341Display* display)
  8000fc4:	440b      	add	r3, r1
  8000fc6:	3304      	adds	r3, #4
  8000fc8:	6018      	str	r0, [r3, #0]
-    	fruits[i].y = ((rand() % 23))*10;
+    	fruits[i].y = ((rand() % 23)) * 10;
  8000fca:	f00c f877 	bl	800d0bc <rand>
  8000fce:	4601      	mov	r1, r0
  8000fd0:	4b1d      	ldr	r3, [pc, #116]	@ (8001048 <_ZN7ELE33125FruitC1EPNS_14ILI9341DisplayE+0xd0>)
@@ -1329,7 +1329,7 @@ Fruit::Fruit(ILI9341Display* display)
  8001000:	440b      	add	r3, r1
  8001002:	3308      	adds	r3, #8
  8001004:	6018      	str	r0, [r3, #0]
-    	fruits[i].id = 3 + rand() % 4;
+    	fruits[i].id = 3 + (rand() % 4);
  8001006:	f00c f859 	bl	800d0bc <rand>
  800100a:	4603      	mov	r3, r0
  800100c:	425a      	negs	r2, r3
@@ -1496,7 +1496,7 @@ Snake::Snake(ILI9341Display* display)
  800111e:	2202      	movs	r2, #2
  8001120:	f8c3 24c8 	str.w	r2, [r3, #1224]	@ 0x4c8
 
-    int xInit = (rand() % 31)*10;
+    int xInit = (rand() % 31) * 10;
  8001124:	f00b ffca 	bl	800d0bc <rand>
  8001128:	4602      	mov	r2, r0
  800112a:	4b31      	ldr	r3, [pc, #196]	@ (80011f0 <_ZN7ELE33125SnakeC1EPNS_14ILI9341DisplayE+0xf4>)
@@ -1514,7 +1514,7 @@ Snake::Snake(ILI9341Display* display)
  8001144:	440b      	add	r3, r1
  8001146:	005b      	lsls	r3, r3, #1
  8001148:	613b      	str	r3, [r7, #16]
-    int yInit = (rand() % 23)*10;
+    int yInit = (rand() % 23) * 10;
  800114a:	f00b ffb7 	bl	800d0bc <rand>
  800114e:	4601      	mov	r1, r0
  8001150:	4b28      	ldr	r3, [pc, #160]	@ (80011f4 <_ZN7ELE33125SnakeC1EPNS_14ILI9341DisplayE+0xf8>)
@@ -1540,7 +1540,7 @@ Snake::Snake(ILI9341Display* display)
  8001176:	617b      	str	r3, [r7, #20]
  8001178:	e02f      	b.n	80011da <_ZN7ELE33125SnakeC1EPNS_14ILI9341DisplayE+0xde>
     {
-    	tampon[i].x = xInit + i * TILE_SIZE;
+    	tampon[i].x = xInit + (i * TILE_SIZE);
  800117a:	697a      	ldr	r2, [r7, #20]
  800117c:	4613      	mov	r3, r2
  800117e:	009b      	lsls	r3, r3, #2

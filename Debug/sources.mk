@@ -43,6 +43,7 @@ Core/Src/Game/Graphics/Graphics/GraphObjects \
 Core/Src/Game/Graphics/Graphics \
 Core/Src/Interfaces/Display \
 Core/Src/NucleoImp/Display \
+Core/Src/NucleoImp/Keypad \
 Core/Src \
 Core/Startup \
 Drivers/STM32F4xx_HAL_Driver/Src \
