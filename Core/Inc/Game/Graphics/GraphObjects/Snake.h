@@ -8,14 +8,7 @@
 
 namespace ELE3312 {
 
-struct tile
-{
-	int x;
-	int y;
-	int id;
-};
-
-enum Direction {North = 1, East = 2, South = 3, West= 4};
+enum Direction {NORTH = 1, EAST = 2, SOUTH = 3, WEST= 4};
 
 class Snake
 {
@@ -29,7 +22,7 @@ public:
     void turn(int direction);
     int getHead();
     int getTail();
-    tile getTampon();
+    tile* getTampon();
     int getLastDirection();
 
 private:
