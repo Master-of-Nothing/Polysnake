@@ -1,4 +1,5 @@
 #include "Game/Graphics/GraphObjects/Snake.h"
+#include "Game/Graphics/GraphObjects.h"
 #include <NucleoImp/Display/ILI9341Display.h>
 
 #define TILE_SIZE 10
@@ -40,33 +41,96 @@ void Snake::clear()
 
 void Snake::move(int eat)
 {
-	int headInitial = Snake::getHead();
-
-	if(!eat)
+	int xPos = tampon[head].x;
+	int yPos = tampon[head].y;
+	if(!eat) // ne mange pas
 	{
-		tampon[tail].id = empty; // 0 case vide, la queue a avancer
-		tail++; // Attention verifier pour le ring buffer
+		tampon[this->tail].id = empty; // 0 case vide, la queue a avancer
+		Snake::clear();
+		if(MaxLength % (tail +1))
+			{
+				tail++;
+			}
+			else
+				tail = 0; // Implemtation ring buffer pour tail ; si tail == MaxLength alors on retourne au debut du tableau
 	}
-
 	tampon[head].id = snakebody; // la case de la tete devient un corps
-	switch (LastDirection)
+	if(MaxLength % (head +1))
+	{
+		head++;
+	}
+	else
+		head = 0;
+	tampon[head].id = snakehead;
+	switch (LastDirection) // change les position x, y en fonction de la LastDirection
 		{
 		case(NORTH):
-				;
+				{
+					tampon[head].y = yPos--;
+					tampon[head].x = xPos;
+				}
 		case(EAST):
-				;
+				{
+					tampon[head].y = yPos;
+					tampon[head].x = xPos++;
+				}
 		case(SOUTH):
-				;
+				{
+					tampon[head].y = yPos++;
+					tampon[head].x = xPos;
+				}
 		case(WEST):
-				;
+				{
+					tampon[head].y = yPos;
+					tampon[head].x = xPos--;
+				}
 		}
 }
 
 void Snake::turn(int direction)
 {
-	if(direction == NORTH || direction == EAST || direction == SOUTH || direction == WEST)
-		Snake::LastDirection = direction;
+	if(!(direction == NORTH || direction == EAST || direction == SOUTH || direction == WEST))
+		return;
+	switch (this->LastDirection)
+			{
+			case(NORTH):
+					{
+						if(direction == EAST || direction == WEST)
+							{
+								this-> LastDirection = direction;
+							}
+						break;
+					}
+			case(EAST):
+					{
+						if(direction == NORTH || direction == SOUTH)
+							{
+								this-> LastDirection = direction;
+							}
+						break;
+					}
+			case(SOUTH):
+					{
+						if(direction == EAST || direction == WEST)
+							{
+								this-> LastDirection = direction;
+							}
+						break;
+					}
+			case(WEST):
+					{
+						if(direction == NORTH || direction == SOUTH)
+							{
+								this-> LastDirection = direction;
+							}
+						break;
+					}
+			}
+
 }
+
+	//Snake::LastDirection = direction;
+
 
 int Snake::getHead() { return this -> head; }
 

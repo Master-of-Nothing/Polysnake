@@ -88,6 +88,13 @@ void cpp_main(peripheral_handles *handles)
 	snake.draw();
 	Fruit fruit(&display);
 	fruit.draw();
+//	snake.move(0);
+//	HAL_Delay(2000);
+//	snake.draw();
 	while(1)
-	{};
+	{
+//		HAL_Delay(2000);
+//		snake.move(0);
+//		snake.draw();
+	};
 }
