@@ -11,31 +11,36 @@ Snake::Snake(ILI9341Display* display)
 {
     this -> disp = display;
     this -> head = 3;
-    this -> tail = 0;
+    this -> tail = 98;
+    this -> longueur = this->getLongueur();
     this -> LastDirection = EAST;
 
     int xInit = (rand() % 31) * 10;
     int yInit = (rand() % 23) * 10;
 
-    for (int i = 0; i <= head; i++)
+    for (int i = 0; i <= this->getLongueur(); i++)
     {
-    	tampon[i].x = xInit + (i * TILE_SIZE);
-    	tampon[i].y = yInit;
-    	tampon[i].id = (i == head) ? snakehead : snakebody;
+    	//printf(" valeur de i dans init : %d",i);
+    	int position = this->ringBuffer(i);
+    	tampon[position].x = xInit + (i * TILE_SIZE);
+    	tampon[position].y = yInit;
+    	tampon[position].id = (position == head) ? snakehead : snakebody;
     }
 }
 
 void Snake::draw()
 {
-	for (int i = 0; i <= (head + tail); i++)
+	for (int i = 0; i <= this->getLongueur(); i++)
 	{
-		Color color = (i == head) ? Color::DARKGREEN : Color::GREEN ;
-		disp->fillRect(color, tampon[i].x, tampon[i].y, TILE_SIZE, TILE_SIZE);
+    	int position = this->ringBuffer(i);
+		Color color = (position == head) ? Color::DARKGREEN : Color::GREEN ;
+		disp->fillRect(color, tampon[position].x, tampon[position].y, TILE_SIZE, TILE_SIZE);
 	}
 }
 
-void Snake::clear()
+void Snake::clearTail() // mets la case de la queue en noir et change son ID pour vide
 {
+	tampon[tail].id = empty;
     disp->fillRect(Color::BLACK, tampon[tail].x, tampon[tail].y, TILE_SIZE, TILE_SIZE);
 }
 
@@ -45,8 +50,7 @@ void Snake::move(int eat)
 	int yPos = tampon[head].y;
 	if(!eat) // ne mange pas
 	{
-		tampon[this->tail].id = empty; // 0 case vide, la queue a avancer
-		Snake::clear();
+		Snake::clearTail();
 		if(MaxLength % (tail +1))
 			{
 				tail++;
@@ -66,23 +70,23 @@ void Snake::move(int eat)
 		{
 		case(NORTH):
 				{
-					tampon[head].y = yPos--;
+					tampon[head].y = yPos - TILE_SIZE;
 					tampon[head].x = xPos;
 				}
 		case(EAST):
 				{
 					tampon[head].y = yPos;
-					tampon[head].x = xPos++;
+					tampon[head].x = xPos + TILE_SIZE;
 				}
 		case(SOUTH):
 				{
-					tampon[head].y = yPos++;
+					tampon[head].y = yPos + TILE_SIZE;
 					tampon[head].x = xPos;
 				}
 		case(WEST):
 				{
 					tampon[head].y = yPos;
-					tampon[head].x = xPos--;
+					tampon[head].x = xPos - TILE_SIZE;
 				}
 		}
 }
@@ -97,7 +101,7 @@ void Snake::turn(int direction)
 					{
 						if(direction == EAST || direction == WEST)
 							{
-								this-> LastDirection = direction;
+								LastDirection = direction;
 							}
 						break;
 					}
@@ -105,7 +109,7 @@ void Snake::turn(int direction)
 					{
 						if(direction == NORTH || direction == SOUTH)
 							{
-								this-> LastDirection = direction;
+								LastDirection = direction;
 							}
 						break;
 					}
@@ -113,7 +117,7 @@ void Snake::turn(int direction)
 					{
 						if(direction == EAST || direction == WEST)
 							{
-								this-> LastDirection = direction;
+								LastDirection = direction;
 							}
 						break;
 					}
@@ -121,7 +125,7 @@ void Snake::turn(int direction)
 					{
 						if(direction == NORTH || direction == SOUTH)
 							{
-								this-> LastDirection = direction;
+								LastDirection = direction;
 							}
 						break;
 					}
@@ -130,7 +134,15 @@ void Snake::turn(int direction)
 }
 
 	//Snake::LastDirection = direction;
-
+int Snake::ringBuffer(int element) // Renvoie la position de l'un l'élement du corps du serpent par rapport au tableau complet
+{
+	if(tail + element <= MaxLength-1)
+	{
+		return ((tail + element)%(MaxLength-1));
+	}
+	else
+		return ((tail + element)%(MaxLength-1) - 1);
+}
 
 int Snake::getHead() { return this -> head; }
 
@@ -139,5 +151,17 @@ int Snake::getTail() { return this -> tail; }
 tile* Snake::getTampon() { return this->tampon; }
 
 int Snake::getLastDirection() { return Snake::LastDirection; }
+
+int Snake::getLongueur() // Donne les nombre d'élement dans le serpent, sa longueur en soit de 0 à n
+{
+	if(head > tail)
+		{
+			return head - tail;
+		}
+		else
+		{
+			return (MaxLength - tail + head);
+		}
+}
 
 }

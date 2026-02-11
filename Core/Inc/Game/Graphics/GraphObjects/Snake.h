@@ -17,13 +17,15 @@ public:
 
     ~Snake() = default;
     void draw();
-    void clear();
+    void clearTail();
     void move(int eat);
     void turn(int direction);
     int getHead();
     int getTail();
-    tile* getTampon();
     int getLastDirection();
+    int getLongueur();
+    tile* getTampon();
+    int ringBuffer(int i);
 
 private:
     ILI9341Display* disp;
@@ -31,6 +33,7 @@ private:
     int tail;
     int head;
     int LastDirection;
+    int longueur;
 };
 
 }
