@@ -44,7 +44,7 @@ void Snake::move(int eat)
 				;
 		case(West):
 				;
-		}
+		}c
 }
 
 void Snake::turn(int direction)
