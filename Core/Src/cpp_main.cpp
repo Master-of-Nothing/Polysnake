@@ -18,11 +18,12 @@
 #include <NucleoImp/Display/ILI9341Display.h>
 #include <Game/Graphics/GraphObjects/Snake.h>
 #include <Game/Graphics/GraphObjects/Fruit.h>
+#include "Game/Game.h"
 
 using namespace ELE3312;
 
 ILI9341Display display;
-
+GPIOKeypad keypad;
 //struct tile
 //{
 //	int x;
@@ -77,27 +78,43 @@ ILI9341Display display;
 //		drawTile({rowID, columnID, fruitID});
 //	}
 //}
-
+Game game;
 void cpp_main(peripheral_handles *handles)
 {
+
 	display.setup(handles->hspi_tft);
 	display.clearScreen();
-	//drawFruits();
-	//drawSnake();
+	keypad.setup(handles->gpio_keypad);
+
 	Fruit fruit(&display);
 	fruit.draw();
 	Snake snake(&display);
 	snake.draw();
-//	snake.move(0);
-//	HAL_Delay(2000);
-//	snake.draw();
+
 	while(1)
 	{
-		//HAL_Delay(1000);
-		//snake.draw();
+		if (keypad.isAnyKeyPressed())
+		{
+			switch (keypad.getFirstKeyPressed())
+			{
+				case KeyCode::TWO:
+					snake.turn(NORTH);
+					break;
+				case KeyCode::SIX:
+					snake.turn(EAST);
+					break;
+				case KeyCode::EIGHT:
+					snake.turn(SOUTH);
+					break;
+				case KeyCode::FOUR:
+					snake.turn(WEST);
+					break;
+				default:
+					break;
+			}
+		}
 		snake.move(0);
-		//HAL_Delay(1000);
 		snake.draw();
-		HAL_Delay(1000);
+		HAL_Delay(750);
 	};
 }
