@@ -10,18 +10,23 @@ namespace ELE3312 {
 Snake::Snake(ILI9341Display* display)
 {
     this -> disp = display;
-    this -> head = 3;
-    this -> tail = 98;
+    this -> head = 1;
+    this -> tail = 99;
     this -> longueur = this->getLongueur();
-    this -> LastDirection = EAST;
+    this -> LastDirection = SOUTH;
 
-    int xInit = (rand() % 31) * 10;
-    int yInit = (rand() % 23) * 10;
-
-    for (int i = 0; i <= this->getLongueur(); i++)
+    int xInit = 10;//(rand() % 31) * 10;
+    int yInit = 10;//(rand() % 23) * 10;
+    for (int i = 0; i < MaxLength; i++)
+        {
+        	tampon[i].x = 0;
+        	tampon[i].y = 0;
+        	tampon[i].id = empty;
+        }
+    for (int i = 0; i < this->getLongueur(); i++)
     {
     	//printf(" valeur de i dans init : %d",i);
-    	int position = this->ringBuffer(i);
+    	int position = this->relativePos(i);
     	tampon[position].x = xInit + (i * TILE_SIZE);
     	tampon[position].y = yInit;
     	tampon[position].id = (position == head) ? snakehead : snakebody;
@@ -30,9 +35,9 @@ Snake::Snake(ILI9341Display* display)
 
 void Snake::draw()
 {
-	for (int i = 0; i <= this->getLongueur(); i++)
+	for (int i = 0; i < this->getLongueur(); i++)
 	{
-    	int position = this->ringBuffer(i);
+    	int position = this->relativePos(i);
 		Color color = (position == head) ? Color::DARKGREEN : Color::GREEN ;
 		disp->fillRect(color, tampon[position].x, tampon[position].y, TILE_SIZE, TILE_SIZE);
 	}
@@ -42,6 +47,8 @@ void Snake::clearTail() // mets la case de la queue en noir et change son ID pou
 {
 	tampon[tail].id = empty;
     disp->fillRect(Color::BLACK, tampon[tail].x, tampon[tail].y, TILE_SIZE, TILE_SIZE);
+    tampon[tail].x = 0;
+    tampon[tail].y = 0;
 }
 
 void Snake::move(int eat)
@@ -51,7 +58,8 @@ void Snake::move(int eat)
 	if(!eat) // ne mange pas
 	{
 		Snake::clearTail();
-		if(MaxLength % (tail +1))
+		//tampon[tail].id = empty;
+		if((tail +1) % MaxLength) // egale à 0 quand tail = 100
 			{
 				tail++;
 			}
@@ -59,36 +67,15 @@ void Snake::move(int eat)
 				tail = 0; // Implemtation ring buffer pour tail ; si tail == MaxLength alors on retourne au debut du tableau
 	}
 	tampon[head].id = snakebody; // la case de la tete devient un corps
-	if(MaxLength % (head +1))
+	if((head +1) % MaxLength) // egale à 0 quand head = 100
 	{
 		head++;
 	}
 	else
 		head = 0;
 	tampon[head].id = snakehead;
-	switch (LastDirection) // change les position x, y en fonction de la LastDirection
-		{
-		case(NORTH):
-				{
-					tampon[head].y = yPos - TILE_SIZE;
-					tampon[head].x = xPos;
-				}
-		case(EAST):
-				{
-					tampon[head].y = yPos;
-					tampon[head].x = xPos + TILE_SIZE;
-				}
-		case(SOUTH):
-				{
-					tampon[head].y = yPos + TILE_SIZE;
-					tampon[head].x = xPos;
-				}
-		case(WEST):
-				{
-					tampon[head].y = yPos;
-					tampon[head].x = xPos - TILE_SIZE;
-				}
-		}
+	Snake::newPosition(xPos,yPos);
+
 }
 
 void Snake::turn(int direction)
@@ -134,14 +121,14 @@ void Snake::turn(int direction)
 }
 
 	//Snake::LastDirection = direction;
-int Snake::ringBuffer(int element) // Renvoie la position de l'un l'élement du corps du serpent par rapport au tableau complet
+int Snake::relativePos(int element) // Renvoie la position de l'un l'élement du corps du serpent par rapport au tableau complet
 {
-	if(tail + element <= MaxLength-1)
+	if(tail + element < MaxLength)
 	{
-		return ((tail + element)%(MaxLength-1));
+		return ((tail + element)%(MaxLength));
 	}
 	else
-		return ((tail + element)%(MaxLength-1) - 1);
+		return (tail + element)%(MaxLength);
 }
 
 int Snake::getHead() { return this -> head; }
@@ -156,12 +143,35 @@ int Snake::getLongueur() // Donne les nombre d'élement dans le serpent, sa long
 {
 	if(head > tail)
 		{
-			return head - tail;
+			return head - tail + 1;
 		}
 		else
 		{
-			return (MaxLength - tail + head);
+			return (MaxLength - tail + head) + 1;
 		}
+}
+void Snake::newPosition(int xPos, int yPos)
+{
+	if(LastDirection == NORTH)
+			{
+				tampon[head].y = yPos - TILE_SIZE;
+				tampon[head].x = xPos;
+			}
+	else if(LastDirection == EAST)
+			{
+				tampon[head].y = yPos;
+				tampon[head].x = xPos + TILE_SIZE;
+			}
+	else if(LastDirection == SOUTH)
+			{
+				tampon[head].y = yPos + TILE_SIZE;
+				tampon[head].x = xPos;
+			}
+	else if(LastDirection == WEST)
+			{
+				tampon[head].y = yPos;
+				tampon[head].x = xPos - TILE_SIZE;
+			}
 }
 
 }

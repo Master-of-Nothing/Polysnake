@@ -93,8 +93,11 @@ void cpp_main(peripheral_handles *handles)
 //	snake.draw();
 	while(1)
 	{
-		HAL_Delay(500);
+		//HAL_Delay(1000);
+		//snake.draw();
 		snake.move(0);
+		//HAL_Delay(1000);
 		snake.draw();
+		HAL_Delay(1000);
 	};
 }
