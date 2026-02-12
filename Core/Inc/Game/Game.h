@@ -33,7 +33,7 @@ private :
 
 	static GameState state;
 
-	tile Grid[MaxWith][MaxHeigth];
+	//tile Grid[MaxWith][MaxHeigth]; // trop gros pour la RAM
 };
 
 

@@ -13,7 +13,7 @@ Snake::Snake(ILI9341Display* display)
     this -> head = 1;
     this -> tail = 99;
     this -> longueur = this->getLongueur();
-    this -> LastDirection = SOUTH;
+    this -> LastDirection = EAST;
 
     int xInit = 10;//(rand() % 31) * 10;
     int yInit = 10;//(rand() % 23) * 10;
