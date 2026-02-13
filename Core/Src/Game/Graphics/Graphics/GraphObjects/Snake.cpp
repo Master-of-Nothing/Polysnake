@@ -10,8 +10,8 @@ namespace ELE3312 {
 Snake::Snake(ILI9341Display* display)
 {
     this -> disp = display;
-    this -> head = 1;
-    this -> tail = 99;
+    this -> head = 3;
+    this -> tail = 0;
     this -> longueur = this->getLongueur();
     this -> LastDirection = EAST;
 
@@ -75,6 +75,7 @@ void Snake::move(int eat)
 		head = 0;
 	tampon[head].id = snakehead;
 	Snake::newPosition(xPos,yPos);
+	this->longueur = Snake::getLongueur();
 
 }
 

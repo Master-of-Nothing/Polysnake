@@ -15,7 +15,8 @@ public:
 
     ~Fruit() = default;
     void draw();
-    void clear();
+    void clear(int xPos, int yPos);
+    bool find(int xPos, int yPos);
     tile* getFruit();
 
 private:

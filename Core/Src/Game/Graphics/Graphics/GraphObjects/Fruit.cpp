@@ -32,4 +32,31 @@ void Fruit::draw()
 	}
 }
 
+tile* Fruit::getFruit(){ return this->fruits;}
+
+void Fruit::clear(int xPos, int yPos)
+{
+	for(int i = 0; i < LISTE_FRUITS; i++)
+	{
+		if(fruits[i].x == xPos && fruits[i].y == yPos)
+		{
+			fruits[i].x = 0;
+			fruits[i].y = 0;
+			fruits[i].id = empty;
+		}
+	}
+}
+
+bool Fruit::find(int xPos, int yPos)
+{
+	for(int i = 0; i < LISTE_FRUITS; i++)
+		{
+			if(fruits[i].x == xPos && fruits[i].y == yPos)
+			{
+				return 1;
+			}
+		}
+	return 0;
+}
+
 }
