@@ -28,6 +28,11 @@ using namespace ELE3312;
 ILI9341Display display;
 GPIOKeypad keypad;
 
+extern bool FruitCollion;
+
+extern bool SnakeCollision;
+
+
 
 
 // Fonction permettant de détecter si le serpent va manger un fruit.

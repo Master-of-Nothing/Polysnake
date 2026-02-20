@@ -38,13 +38,13 @@ CPP_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Core/Src \
 Core/Src/Game \
 Core/Src/Game/Graphics/Graphics/GraphObjects \
 Core/Src/Game/Graphics/Graphics \
 Core/Src/Interfaces/Display \
 Core/Src/NucleoImp/Display \
 Core/Src/NucleoImp/Keypad \
-Core/Src \
 Core/Startup \
 Drivers/STM32F4xx_HAL_Driver/Src \
 
