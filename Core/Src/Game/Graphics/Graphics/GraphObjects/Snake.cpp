@@ -10,13 +10,13 @@ namespace ELE3312 {
 Snake::Snake(ILI9341Display* display)
 {
     this -> disp = display;
-    this -> head = 3;
+    this -> head = 8;
     this -> tail = 0;
     this -> longueur = this->getLongueur();
     this -> LastDirection = EAST;
 
-    int xInit = 10;//(rand() % 31) * 10;
-    int yInit = 10;//(rand() % 23) * 10;
+    int xInit = (rand() % 31) * 10;//10;
+    int yInit = (rand() % 23) * 10;//10;
     for (int i = 0; i < MaxLength; i++)
         {
         	tampon[i].x = 0;

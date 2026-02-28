@@ -28,9 +28,12 @@ using namespace ELE3312;
 ILI9341Display display;
 GPIOKeypad keypad;
 
-extern bool FruitCollion;
-
-extern bool SnakeCollision;
+extern "C"{
+	bool FruitCollision_asm(ELE3312::tile* liste_fruit, ELE3312::tile* snake_head, int nombre_fruit);
+}
+extern "C"{
+	bool SnakeCollision_asm(ELE3312::tile* snake_body,int head_index, int longueur_snake);
+}
 
 
 
@@ -76,15 +79,27 @@ void cpp_main(peripheral_handles *handles)
 	display.clearScreen();
 	//keypad.setup(handles->gpio_keypad);
 	GPIO_TypeDef *gpio = handles->gpio_keypad;
-
 	Fruit fruit(&display);
 	fruit.draw();
 	Snake snake(&display);
 	snake.draw();
 	uint32_t keysPressed = 0;
-	int chiffre = 0;
+	bool fruit_colli = 0;
+	bool state = 1;
 	while(1)
 	{
+		if(!state) // commence la partie => initaialisation
+		{
+			display.clearScreen();
+			HAL_Delay(2);
+			//keypad.setup(handles->gpio_keypad);
+			Fruit fruit(&display);
+			fruit.draw();
+			Snake snake(&display);
+			snake.draw();
+			state = 1;
+		}
+
 		for(uint32_t row = 4; row > 0 ; row--)
 		{
 			// Première chose : mettre à jour ODR pour la colonne préssée
@@ -142,9 +157,16 @@ void cpp_main(peripheral_handles *handles)
 				snake.turn(4); // WEST
 			}
 		}
-
-		snake.move(eat(snake, fruit));
+		tile* liste_fruit = fruit.getFruit();
+		fruit_colli = FruitCollision_asm(liste_fruit, snake_body + snake.getHead(), 10);
+		tile* snake_body = snake.getTampon();
+		if(SnakeCollision_asm(snake_body,snake.getHead(), snake.getLongueur()))
+		{
+			state = 0;
+			display.clearScreen();
+			continue;
+		}
+		snake.move(fruit_colli);
 		snake.draw();
-		//HAL_Delay(50);
 	};
 }

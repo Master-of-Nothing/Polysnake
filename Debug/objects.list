@@ -1,5 +1,4 @@
-"./Core/Src/FruitCollision.o"
-"./Core/Src/SnakeCollision.o"
+"./Core/Src/Collision.o"
 "./Core/Src/cpp_main.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32f4xx_hal_msp.o"
