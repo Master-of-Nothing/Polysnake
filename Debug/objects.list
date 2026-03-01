@@ -16,6 +16,8 @@
 "./Core/Src/NucleoImp/Display/ili9341_font.o"
 "./Core/Src/NucleoImp/Display/ili9341_gfx.o"
 "./Core/Src/NucleoImp/Keypad/GPIOKeypad.o"
+"./Core/Src/NucleoImp/MotionInput/MPU6050MotionInput.o"
+"./Core/Src/NucleoImp/MotionInput/mpu6050.o"
 "./Core/Startup/startup_stm32f446retx.o"
 "./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o"
 "./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.o"

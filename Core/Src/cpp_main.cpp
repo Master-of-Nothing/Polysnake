@@ -16,6 +16,8 @@
 #include "main.h"
 #include <cpp_main.h>
 #include <NucleoImp/Display/ILI9341Display.h>
+#include <NucleoImp/Keypad/GPIOKeypad.h>
+#include <NucleoImp/MotionInput/MPU6050MotionInput.h>
 #include "Interfaces/Keypad/Keypad.h"
 #include <Game/Graphics/GraphObjects/Snake.h>
 #include <Game/Graphics/GraphObjects/Fruit.h>
@@ -27,6 +29,7 @@ using namespace ELE3312;
 
 ILI9341Display display;
 GPIOKeypad keypad;
+MPU6050MotionInput motionInput;
 
 extern "C"{
 	bool FruitCollision_asm(ELE3312::tile* liste_fruit, ELE3312::tile* snake_head, int nombre_fruit);
@@ -77,14 +80,14 @@ void cpp_main(peripheral_handles *handles)
 {
 	display.setup(handles->hspi_tft);
 	display.clearScreen();
-	//keypad.setup(handles->gpio_keypad);
 	GPIO_TypeDef *gpio = handles->gpio_keypad;
+	keypad.setup(handles->gpio_keypad);
+	motionInput.setup(handles->hi2c);
 	Fruit fruit(&display);
 	fruit.draw();
 	Snake snake(&display);
 	snake.draw();
 	uint32_t keysPressed = 0;
-	bool fruit_colli = 0;
 	bool state = 1;
 	while(1)
 	{
@@ -99,9 +102,25 @@ void cpp_main(peripheral_handles *handles)
 			snake.draw();
 			state = 1;
 		}
-
+		// A retrvailler ecran a des reaction bizarre
+//		keypad.update();
+//		if(keypad.isAnyKeyPressed())
+//		{
+//			switch(keypad.getFirstKeyPressed())
+//			{
+//			case KeyCode::FOUR:
+//				snake.turn(4);
+//				break;
+//			case KeyCode::SIX:
+//				snake.turn(2);
+//				break;
+//			default:
+//				break;
+//			}
+//		}
 		for(uint32_t row = 4; row > 0 ; row--)
 		{
+
 			// Première chose : mettre à jour ODR pour la colonne préssée
 			// 0x0138 : mette toutes les pins des rangées à HIGH, équivalent à ROW1_PIN |ROW2_PIN |ROW3_PIN |ROW4_PIN |
 			constexpr uint32_t high = ROW1_Pin | ROW2_Pin | ROW3_Pin | ROW4_Pin;
@@ -157,8 +176,16 @@ void cpp_main(peripheral_handles *handles)
 				snake.turn(4); // WEST
 			}
 		}
+		if(!keysPressed)
+		{
+			motionInput.update();
+			if(motionInput.getX() > 0.6 && motionInput.getX() > 0.3)
+				snake.turn(4);
+			else if(motionInput.getY() > 0.6 && motionInput.getY() > 0.3)
+				snake.turn(2);
+			HAL_Delay(5);
+		}
 		tile* liste_fruit = fruit.getFruit();
-		fruit_colli = FruitCollision_asm(liste_fruit, snake_body + snake.getHead(), 10);
 		tile* snake_body = snake.getTampon();
 		if(SnakeCollision_asm(snake_body,snake.getHead(), snake.getLongueur()))
 		{
@@ -166,7 +193,8 @@ void cpp_main(peripheral_handles *handles)
 			display.clearScreen();
 			continue;
 		}
-		snake.move(fruit_colli);
+		//FruitCollision_asm(liste_fruit, snake_body + snake.getHead(), 10)
+		snake.move(FruitCollision_asm(liste_fruit, snake_body + snake.getHead(), 10));
 		snake.draw();
 	};
 }

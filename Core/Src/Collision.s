@@ -77,7 +77,7 @@ SnakeCollision_asm:
 
 loop_circular:
     CMP r2, #0          // Plus d'anneaux à tester ?
-    BEQ no_collision
+    BEQ pas_collision
 
     // Reculer l'index (on remonte de la tête vers la queue)
     SUBS r7, r7, #1
@@ -99,17 +99,17 @@ calc_addr:
 
     LDR r4, [r8, #4]    // r4 = body[i].y
     CMP r4, r6
-    BEQ collision_found // X et Y identiques ? Collision !
+    BEQ collision_trouve // X et Y identiques ? Collision !
 
 next_iter:
     SUB r2, r2, #1
     B loop_circular
 
-collision_found:
+collision_trouve:
     MOV r0, #1
     B end_asm
 
-no_collision:
+pas_collision:
     MOV r0, #0
 
 end_asm:

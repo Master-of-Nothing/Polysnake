@@ -3,11 +3,11 @@
 ../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:36:6:void ELE3312::Snake::draw()	3
 ../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:46:6:void ELE3312::Snake::clearTail()	1
 ../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:54:6:void ELE3312::Snake::move(int)	4
-../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:82:6:void ELE3312::Snake::turn(int)	17
-../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:125:5:int ELE3312::Snake::relativePos(int)	2
-../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:135:5:int ELE3312::Snake::getHead()	1
-../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:137:5:int ELE3312::Snake::getTail()	1
-../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:139:7:ELE3312::tile* ELE3312::Snake::getTampon()	1
-../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:141:5:int ELE3312::Snake::getLastDirection()	1
-../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:143:5:int ELE3312::Snake::getLongueur()	2
-../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:154:6:void ELE3312::Snake::newPosition(int, int)	5
+../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:82:6:void ELE3312::Snake::turn(int)	11
+../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:134:5:int ELE3312::Snake::relativePos(int)	2
+../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:144:5:int ELE3312::Snake::getHead()	1
+../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:146:5:int ELE3312::Snake::getTail()	1
+../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:148:7:ELE3312::tile* ELE3312::Snake::getTampon()	1
+../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:150:5:int ELE3312::Snake::getLastDirection()	1
+../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:152:5:int ELE3312::Snake::getLongueur()	2
+../Core/Src/Game/Graphics/Graphics/GraphObjects/Snake.cpp:163:6:void ELE3312::Snake::newPosition(int, int)	5
