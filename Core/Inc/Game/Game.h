@@ -9,12 +9,14 @@
 #include "Game/Graphics/GraphObjects/Snake.h"
 #include "Game/Graphics/GraphObjects/Fruit.h"
 #include "Interfaces/Display/Sprite.h"
-#include "NucleoImp/Keypad/GPIOKeypad.h"
+#include "NucleoImp/Keypad/KeyPad.h"
+#include <NucleoImp/MotionInput/MPU6050MotionInput.h>
+
 
 
 namespace ELE3312{
 
-enum class GameState {Init, Running, Victory };
+enum GameState {Init, Running, Victory };
 
 class Game
 {
@@ -22,18 +24,19 @@ public :
 	Game();
 	~Game() = default;
 	void setup(peripheral_handles *handles);
-	void run();
+	void run(peripheral_handles *handles);
 
 
 private :
 	peripheral_handles *handles = nullptr;
 	// Périphérique
 	static ILI9341Display display;
-	static GPIOKeypad Keypad;
-
+	static KeyPad keypad;
+	static MPU6050MotionInput motionInput;
+	static Fruit fruit;
+	static Snake snake;
 	static GameState state;
 
-	//tile Grid[MaxWith][MaxHeigth]; // trop gros pour la RAM
 };
 
 

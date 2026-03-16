@@ -79,7 +79,7 @@ void Snake::move(int eat)
 
 }
 
-void Snake::turn(int direction)
+void Snake::turn(Direction direction)
 {
 	if(!( direction == EAST ||  direction == WEST))
 		return;

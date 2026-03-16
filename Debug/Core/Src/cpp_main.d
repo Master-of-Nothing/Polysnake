@@ -44,15 +44,14 @@ Core/Src/cpp_main.o: ../Core/Src/cpp_main.cpp ../Core/Inc/main.h \
  ../Core/Inc/NucleoImp/Display/ili9341_gfx.h \
  ../Core/Inc/NucleoImp/Display/ili9341.h \
  ../Core/Inc/NucleoImp/Display/ili9341_font.h \
- ../Core/Inc/NucleoImp/Keypad/GPIOKeypad.h \
- ../Core/Inc/Interfaces/Keypad/Keypad.h \
  ../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h \
  ../Core/Inc/Interfaces/MotionInput/MotionInput.h \
  ../Core/Inc/NucleoImp/MotionInput/mpu6050.h \
  ../Core/Inc/Game/Graphics/GraphObjects/Snake.h \
  ../Core/Inc/Game/Graphics/GraphObjects.h \
  ../Core/Inc/Game/Graphics/GraphObjects/Fruit.h ../Core/Inc/Game/Game.h \
- ../Core/Inc/Interfaces/Display/Sprite.h
+ ../Core/Inc/Interfaces/Display/Sprite.h \
+ ../Core/Inc/NucleoImp/Keypad/KeyPad.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -100,8 +99,6 @@ Core/Src/cpp_main.o: ../Core/Src/cpp_main.cpp ../Core/Inc/main.h \
 ../Core/Inc/NucleoImp/Display/ili9341_gfx.h:
 ../Core/Inc/NucleoImp/Display/ili9341.h:
 ../Core/Inc/NucleoImp/Display/ili9341_font.h:
-../Core/Inc/NucleoImp/Keypad/GPIOKeypad.h:
-../Core/Inc/Interfaces/Keypad/Keypad.h:
 ../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h:
 ../Core/Inc/Interfaces/MotionInput/MotionInput.h:
 ../Core/Inc/NucleoImp/MotionInput/mpu6050.h:
@@ -110,3 +107,4 @@ Core/Src/cpp_main.o: ../Core/Src/cpp_main.cpp ../Core/Inc/main.h \
 ../Core/Inc/Game/Graphics/GraphObjects/Fruit.h:
 ../Core/Inc/Game/Game.h:
 ../Core/Inc/Interfaces/Display/Sprite.h:
+../Core/Inc/NucleoImp/Keypad/KeyPad.h:

@@ -5,13 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../Core/Src/NucleoImp/Keypad/GPIOKeypad.cpp 
+../Core/Src/NucleoImp/Keypad/KeyPad.cpp 
 
 OBJS += \
-./Core/Src/NucleoImp/Keypad/GPIOKeypad.o 
+./Core/Src/NucleoImp/Keypad/KeyPad.o 
 
 CPP_DEPS += \
-./Core/Src/NucleoImp/Keypad/GPIOKeypad.d 
+./Core/Src/NucleoImp/Keypad/KeyPad.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +21,7 @@ Core/Src/NucleoImp/Keypad/%.o Core/Src/NucleoImp/Keypad/%.su Core/Src/NucleoImp/
 clean: clean-Core-2f-Src-2f-NucleoImp-2f-Keypad
 
 clean-Core-2f-Src-2f-NucleoImp-2f-Keypad:
-	-$(RM) ./Core/Src/NucleoImp/Keypad/GPIOKeypad.cyclo ./Core/Src/NucleoImp/Keypad/GPIOKeypad.d ./Core/Src/NucleoImp/Keypad/GPIOKeypad.o ./Core/Src/NucleoImp/Keypad/GPIOKeypad.su
+	-$(RM) ./Core/Src/NucleoImp/Keypad/KeyPad.cyclo ./Core/Src/NucleoImp/Keypad/KeyPad.d ./Core/Src/NucleoImp/Keypad/KeyPad.o ./Core/Src/NucleoImp/Keypad/KeyPad.su
 
 .PHONY: clean-Core-2f-Src-2f-NucleoImp-2f-Keypad
 

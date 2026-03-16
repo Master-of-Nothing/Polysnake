@@ -16,9 +16,7 @@
 #include "main.h"
 #include <cpp_main.h>
 #include <NucleoImp/Display/ILI9341Display.h>
-#include <NucleoImp/Keypad/GPIOKeypad.h>
 #include <NucleoImp/MotionInput/MPU6050MotionInput.h>
-#include "Interfaces/Keypad/Keypad.h"
 #include <Game/Graphics/GraphObjects/Snake.h>
 #include <Game/Graphics/GraphObjects/Fruit.h>
 #include "Game/Game.h"
@@ -28,7 +26,7 @@
 using namespace ELE3312;
 
 ILI9341Display display;
-GPIOKeypad keypad;
+//GPIOKeypad keypad;
 MPU6050MotionInput motionInput;
 
 extern "C"{
@@ -76,12 +74,13 @@ int eat(Snake snake, Fruit fruit)
 	}
 	return eat;
 }
+Game game;
 void cpp_main(peripheral_handles *handles)
 {
 	display.setup(handles->hspi_tft);
 	display.clearScreen();
 	GPIO_TypeDef *gpio = handles->gpio_keypad;
-	keypad.setup(handles->gpio_keypad);
+	//keypad.setup(handles->gpio_keypad);
 	motionInput.setup(handles->hi2c);
 	Fruit fruit(&display);
 	fruit.draw();
@@ -163,26 +162,26 @@ void cpp_main(peripheral_handles *handles)
 			// On regarde quelle touche à été préssée
 			if (row == 1 && keysPressed == 2) {
 				// change la direction pour le NORD
-				snake.turn(1); // NORTH
+				snake.turn(NORTH); // NORTH
 
 			} else if (row == 2 && keysPressed == 4) {
 				// change la direction pour l'OUEST
-				snake.turn(2); // EAST
+				snake.turn(EAST); // EAST
 			} else if (row == 3 && keysPressed == 2) {
 				// change la direction pour l'OUEST
-				snake.turn(3); // SOUTH
+				snake.turn(SOUTH); // SOUTH
 			} else if (row == 2 && keysPressed == 1) {
 				// change la direction pour l'OUEST
-				snake.turn(4); // WEST
+				snake.turn(WEST); // WEST
 			}
 		}
 		if(!keysPressed)
 		{
 			motionInput.update();
 			if(motionInput.getX() > 0.6 && motionInput.getX() > 0.3)
-				snake.turn(4);
+				snake.turn(WEST);
 			else if(motionInput.getY() > 0.6 && motionInput.getY() > 0.3)
-				snake.turn(2);
+				snake.turn(EAST);
 			HAL_Delay(5);
 		}
 		tile* liste_fruit = fruit.getFruit();

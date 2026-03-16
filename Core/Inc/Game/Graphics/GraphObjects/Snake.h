@@ -19,7 +19,7 @@ public:
     void draw();
     void clearTail();
     void move(int eat);
-    void turn(int direction);
+    void turn(Direction direction);
     int getHead();
     int getTail();
     int getLastDirection();
