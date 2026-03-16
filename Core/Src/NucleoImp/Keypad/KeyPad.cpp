@@ -1,0 +1,95 @@
+/*
+ * Keypad.c
+ *
+ *  Created on: Mar 16, 2026
+ *      Author: thom
+ */
+
+#include <NucleoImp/Keypad/KeyPad.h>
+
+using namespace ELE3312;
+
+void KeyPad(){}
+
+void KeyPad::setup(GPIO_TypeDef * gpio){
+	this->gpio = gpio;
+	update();
+}
+
+void KeyPad::update(){
+	for(uint32_t row = NumRow; row > 0 ; row--)
+			{
+
+				// Première chose : mettre à jour ODR pour la colonne préssée
+				// 0x0138 : mette toutes les pins des rangées à HIGH, équivalent à ROW1_PIN |ROW2_PIN |ROW3_PIN |ROW4_PIN |
+				constexpr uint32_t high = ROW1_Pin | ROW2_Pin | ROW3_Pin | ROW4_Pin;
+				gpio->ODR |= high;			// 0x0170;
+				// On mets la pin de row à low pour selectinner la ligne
+				switch (row)
+				{
+					case 1:
+						// ROW1_PIN = 0x0010
+						gpio->ODR &= ~0x10;	//ROW1_Pin;
+						//chiffre = 1;
+						HAL_Delay(10);
+					case 2:
+						// ROW2_PIN = 0x0020
+						gpio->ODR &= ~0x20;	//ROW2_Pin;
+						//chiffre = 2;
+						HAL_Delay(10);
+						//break;
+					case 3:
+						// ROW3_PIN = 0x0040
+						gpio->ODR &= ~0x40;	//ROW3_Pin;
+						//chiffre = 3;
+						HAL_Delay(10);
+					case 4:
+						// ROW4_PIN = 0x0100
+						gpio->ODR &= ~0x100; //ROW4_Pin;
+						//chiffre = 4;
+						HAL_Delay(10);
+				}
+
+				// Deuxième chose : on regarde si une touche est présée
+				//On shift les 4 derniers bits de keypressed pour s'assurer que les bits soit à 0
+				uint32_t keysPressed = 0;
+				keysPressed = keysPressed << 4;
+				// IDR : dans les quatres derniers bits, celui qui passe à zero est celui ou une touche de la colonne à été pressé
+				// 0xF : masque definnissant le nombre de colonne
+				// keysPressed : bit 1 indique la position de la colonne pressée
+				keysPressed |= (~gpio->IDR) & 0xF;
+				HAL_Delay(10);
+				if (row == 1 && keysPressed == 2) {
+					key = 2;
+					}
+				else if (row == 2 && keysPressed == 4) {
+					key = 6;
+					}
+				else if (row == 3 && keysPressed == 2) {
+					key = 8;
+					}
+				else if (row == 2 && keysPressed == 1) {
+					key = 4;
+					}
+			}
+}
+
+KeyCode KeyPad::keyPress(){
+		switch (this->key)
+		{
+			case 4 :
+				return KeyCode::FOUR;
+			case 6 :
+				return KeyCode::SIX;
+			default:
+				return KeyCode::ZERO;
+		}
+}
+
+
+
+
+
+
+
+
