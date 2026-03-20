@@ -1,9 +1,41 @@
 
 #include "Game/Game.h"
-#include "NucleoImp/Keypad/KeyPad.h"
 
 namespace ELE3312 {
 
+int eat(Snake snake, Fruit fruit)
+{
+	int LastDirection = snake.getLastDirection();
+	int head = snake.getHead();
+	tile* tampon = snake.getTampon();
+	int eat = 0;
+	if(LastDirection == NORTH)
+	{
+		eat = fruit.find(tampon[head].x,tampon[head].y - TILE_SIZE);
+		if(!eat){fruit.clear(tampon[head].x,tampon[head].y - TILE_SIZE);}
+		return eat;
+	}
+	else if (LastDirection == EAST)
+	{
+		eat = fruit.find(tampon[head].x + TILE_SIZE,tampon[head].y);
+		if(!eat){fruit.clear(tampon[head].x + TILE_SIZE,tampon[head].y);}
+		return eat;
+	}
+	else if (LastDirection == SOUTH)
+	{
+		eat = fruit.find(tampon[head].x,tampon[head].y + TILE_SIZE);
+		if(!eat){fruit.clear(tampon[head].x,tampon[head].y + TILE_SIZE);}
+		return eat;
+
+	}
+	else if (LastDirection == WEST)
+	{
+		eat = fruit.find(tampon[head].x - TILE_SIZE,tampon[head].y);
+		if(!eat){fruit.clear(tampon[head].x - TILE_SIZE,tampon[head].y);}
+		return eat;
+	}
+	return eat;
+}
 
 Game::Game(){}
 
@@ -14,27 +46,51 @@ void Game::setup(peripheral_handles *handles)
 	display.clearScreen();
 	keypad.setup(handles->gpio_keypad); //On utilise pas le fichier Keypad pour l'instant
 	motionInput.setup(handles->hi2c);
+	uart.setup(handles->huart);
 
 	Fruit fruit(&display);
 	this->fruit = fruit;
 	Snake snake(&display);
+	Snake snake_opponent(&display);
 	this->snake = snake;
 	fruit.draw();
 	snake.draw();
+	snake_opponent.draw();
+	uart_payload.player_id = uart.negotiatePlayerId();
 	this->state = Running;
+
 }
 
 void Game::run(peripheral_handles *handles)
 {
 	if(this->state == Init)
 		this->setup(handles);
-
+	SnakePayload uart_opponent;
  while(1)
  {
+	 if(uart.receiveData(uart_opponent))
+	 {
+		 snake_opponent.turn(uart_opponent.direction);
+	 }
+	 keypad.update();
+	 if(keypad.keyPress() == KeyCode::FOUR){
+		 snake.turn(WEST);
+		 uart_payload.direction = WEST;
+	 }
+	 else{
+		 snake.turn(EAST);
+		 uart_payload.direction = EAST;
+	 }
+	 tile *tampon = snake.getTampon();
+	 uart_payload.head_x = tampon[snake.getHead()].x;
+	 uart_payload.head_y = tampon[snake.getHead()].y;
+	 uart.sendData(uart_payload);
 
-	 snake.move(0);
+
+	 snake.move(eat(snake,fruit));
 	 snake.draw();
-	 HAL_Delay(750);
+	 snake_opponent.draw();
+	 HAL_Delay(100);
  }
 }
 

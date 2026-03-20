@@ -1,4 +1,8 @@
-Core/Src/cpp_main.o: ../Core/Src/cpp_main.cpp ../Core/Inc/main.h \
+Core/Src/NucleoImp/SerialCom/UartSnakeManager.o: \
+ ../Core/Src/NucleoImp/SerialCom/UartSnakeManager.cpp \
+ ../Core/Inc/NucleoImp/SerialCom/COBS.h \
+ ../Core/Inc/NucleoImp/SerialCom/RingBuffer.h \
+ ../Core/Inc/NucleoImp/SerialCom/UartSnakeManager.h ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -34,25 +38,10 @@ Core/Src/cpp_main.o: ../Core/Src/cpp_main.cpp ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Core/Inc/cpp_main.h ../Core/Inc/main.h \
- ../Core/Inc/NucleoImp/Display/ILI9341Display.h \
- ../Core/Inc/Interfaces/Display/Display.h \
- ../Core/Inc/Interfaces/Geometry/Rect.h \
- ../Core/Inc/Interfaces/Geometry/Point.h \
- ../Core/Inc/NucleoImp/Display/ili9341.h \
- ../Core/Inc/NucleoImp/Display/ili9341_gfx.h \
- ../Core/Inc/NucleoImp/Display/ili9341.h \
- ../Core/Inc/NucleoImp/Display/ili9341_font.h \
- ../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h \
- ../Core/Inc/Interfaces/MotionInput/MotionInput.h \
- ../Core/Inc/NucleoImp/MotionInput/mpu6050.h \
- ../Core/Inc/Game/Graphics/GraphObjects/Snake.h \
- ../Core/Inc/Game/Graphics/GraphObjects.h \
- ../Core/Inc/Game/Graphics/GraphObjects/Fruit.h ../Core/Inc/Game/Game.h \
- ../Core/Inc/Interfaces/Display/Sprite.h \
- ../Core/Inc/NucleoImp/Keypad/KeyPad.h \
- ../Core/Inc/NucleoImp/SerialCom/UartSnakeManager.h
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+../Core/Inc/NucleoImp/SerialCom/COBS.h:
+../Core/Inc/NucleoImp/SerialCom/RingBuffer.h:
+../Core/Inc/NucleoImp/SerialCom/UartSnakeManager.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -90,23 +79,3 @@ Core/Src/cpp_main.o: ../Core/Src/cpp_main.cpp ../Core/Inc/main.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-../Core/Inc/cpp_main.h:
-../Core/Inc/main.h:
-../Core/Inc/NucleoImp/Display/ILI9341Display.h:
-../Core/Inc/Interfaces/Display/Display.h:
-../Core/Inc/Interfaces/Geometry/Rect.h:
-../Core/Inc/Interfaces/Geometry/Point.h:
-../Core/Inc/NucleoImp/Display/ili9341.h:
-../Core/Inc/NucleoImp/Display/ili9341_gfx.h:
-../Core/Inc/NucleoImp/Display/ili9341.h:
-../Core/Inc/NucleoImp/Display/ili9341_font.h:
-../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h:
-../Core/Inc/Interfaces/MotionInput/MotionInput.h:
-../Core/Inc/NucleoImp/MotionInput/mpu6050.h:
-../Core/Inc/Game/Graphics/GraphObjects/Snake.h:
-../Core/Inc/Game/Graphics/GraphObjects.h:
-../Core/Inc/Game/Graphics/GraphObjects/Fruit.h:
-../Core/Inc/Game/Game.h:
-../Core/Inc/Interfaces/Display/Sprite.h:
-../Core/Inc/NucleoImp/Keypad/KeyPad.h:
-../Core/Inc/NucleoImp/SerialCom/UartSnakeManager.h:

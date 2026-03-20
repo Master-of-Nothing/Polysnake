@@ -1,44 +1,40 @@
-/**
-  * @file Ringbuffer.h 
-  * @date June 2025
-  * @brief Declares the Ringbuffer class that is used to store incoming bytes from 
-  * the communication interface.
-  * 
-  * @defgroup ELE3312
-  * @{
-  */
-#ifndef RINGBUFFER_INCLUDE_GUARD
-#define RINGBUFFER_INCLUDE_GUARD
+#ifndef RINGBUFFER_H
+#define RINGBUFFER_H
 
-#define RING_BUFFER_SIZE 512
+#include <stdint.h>
+#include <cstddef>
 
-#include <cstdint>
-#include <cstdlib>
 
 namespace ELE3312 {
 
-/** @brief The Ringbuffer class implements a circular buffer that is used to 
-  * store incoming bytes from the communication interface.
-  */
-class Ringbuffer {
-public:
-	Ringbuffer(); 
-	void setup();
-	~Ringbuffer() ;
-	bool write(uint8_t data);
-	bool read(uint8_t *data);
-
-
+class RingBuffer {
 private:
-	uint8_t buffer[RING_BUFFER_SIZE];
-	volatile uint16_t head; // Volatile car modifié dans l'interruption
-	volatile uint16_t tail;
-	volatile uint16_t size;
+    static const size_t BUFFER_SIZE = 256;
+    uint8_t buffer[BUFFER_SIZE];
+    volatile size_t head;
+    volatile size_t tail;
+
+public:
+    RingBuffer() : head(0), tail(0) {}
+
+    void write(uint8_t data) {
+        size_t next_head = (head + 1) % BUFFER_SIZE;
+        if (next_head != tail) {
+            buffer[head] = data;
+            head = next_head;
+        }
+    }
+
+    bool read(uint8_t &data) {
+        if (head == tail) {
+            return false;
+        }
+        data = buffer[tail];
+        tail = (tail + 1) % BUFFER_SIZE;
+        return true;
+    }
 };
 
-} // End namespace ELE3312
+}
 
-/**
-  * @}
-  */ // End of documentation group ELE3312
-#endif
+#endif // RINGBUFFER_H

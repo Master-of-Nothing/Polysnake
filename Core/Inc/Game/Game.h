@@ -10,6 +10,7 @@
 #include "Game/Graphics/GraphObjects/Fruit.h"
 #include "Interfaces/Display/Sprite.h"
 #include "NucleoImp/Keypad/KeyPad.h"
+#include "NucleoImp/SerialCom/UartSnakeManager.h"
 #include <NucleoImp/MotionInput/MPU6050MotionInput.h>
 
 
@@ -33,9 +34,12 @@ private :
 	static ILI9341Display display;
 	static KeyPad keypad;
 	static MPU6050MotionInput motionInput;
+	static UartSnakeManager uart;
 	static Fruit fruit;
 	static Snake snake;
+	static Snake snake_opponent;
 	static GameState state;
+	SnakePayload uart_payload;
 
 };
 

@@ -49,6 +49,7 @@ Core/Src/Game/Game.o: ../Core/Src/Game/Game.cpp ../Core/Inc/Game/Game.h \
  ../Core/Inc/Game/Graphics/GraphObjects/Fruit.h \
  ../Core/Inc/Interfaces/Display/Sprite.h \
  ../Core/Inc/NucleoImp/Keypad/KeyPad.h \
+ ../Core/Inc/NucleoImp/SerialCom/UartSnakeManager.h \
  ../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h \
  ../Core/Inc/Interfaces/MotionInput/MotionInput.h \
  ../Core/Inc/NucleoImp/MotionInput/mpu6050.h
@@ -105,6 +106,7 @@ Core/Src/Game/Game.o: ../Core/Src/Game/Game.cpp ../Core/Inc/Game/Game.h \
 ../Core/Inc/Game/Graphics/GraphObjects/Fruit.h:
 ../Core/Inc/Interfaces/Display/Sprite.h:
 ../Core/Inc/NucleoImp/Keypad/KeyPad.h:
+../Core/Inc/NucleoImp/SerialCom/UartSnakeManager.h:
 ../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h:
 ../Core/Inc/Interfaces/MotionInput/MotionInput.h:
 ../Core/Inc/NucleoImp/MotionInput/mpu6050.h:
