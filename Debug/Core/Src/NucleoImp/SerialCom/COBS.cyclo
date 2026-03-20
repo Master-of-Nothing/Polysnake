@@ -1,2 +1,0 @@
-../Core/Src/NucleoImp/SerialCom/COBS.cpp:20:8:size_t cobsEncode(const void*, size_t, uint8_t*)	10
-../Core/Src/NucleoImp/SerialCom/COBS.cpp:64:8:size_t cobsDecode(const uint8_t*, size_t, void*)	8

@@ -39,7 +39,7 @@ private :
 	static Snake snake;
 	static Snake snake_opponent;
 	static GameState state;
-	SnakePayload uart_payload;
+	static SnakePayload uart_payload;
 
 };
 

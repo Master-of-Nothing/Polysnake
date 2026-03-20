@@ -1,12 +1,23 @@
 #ifndef UARTSNAKEMANAGER_H
 #define UARTSNAKEMANAGER_H
 
+
+#include <NucleoImp/SerialCom/COBS.h>
+#include <NucleoImp/SerialCom/RingBuffer.h>
 #include <stdint.h>
 #include <cstddef>
 #include "main.h"
 
 namespace ELE3312 {
 
+// L'adresse de base de l'Unique ID pour la famille STM32F4
+#define STM32F4_UID_BASE 0x1FFF7A10
+
+extern UART_HandleTypeDef huart2;
+
+RingBuffer rx_ring_buffer;
+uint8_t rx_byte;
+const uint8_t COBS_DELIMITER = 0x00;
 // Structure des données échangées (doit être identique sur les deux cartes)
 
 struct SnakePayload {
@@ -30,6 +41,9 @@ public:
     bool receiveData(SnakePayload& opponentSnake);
 private :
     UART_HandleTypeDef *huart;
+    RingBuffer rx_ring_buffer;
+    uint8_t rx_byte;
+    const uint8_t COBS_DELIMITER = 0x00;
 };
 
 }

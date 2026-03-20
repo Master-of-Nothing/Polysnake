@@ -1,7 +1,14 @@
 
 #include "Game/Game.h"
 
-namespace ELE3312 {
+using namespace ELE3312;
+
+extern "C"{
+	bool FruitCollision_asm(ELE3312::tile* liste_fruit, ELE3312::tile* snake_head, int nombre_fruit);
+}
+extern "C"{
+	bool SnakeCollision_asm(ELE3312::tile* snake_body,int head_index, int longueur_snake);
+}
 
 int eat(Snake snake, Fruit fruit)
 {
@@ -37,7 +44,9 @@ int eat(Snake snake, Fruit fruit)
 	return eat;
 }
 
-Game::Game(){}
+Game::Game(){
+	state = Init;
+}
 
 void Game::setup(peripheral_handles *handles)
 {
@@ -68,6 +77,8 @@ void Game::run(peripheral_handles *handles)
 	SnakePayload uart_opponent;
  while(1)
  {
+	 if(this->state == Init)
+	 		this->setup(handles);
 	 if(uart.receiveData(uart_opponent))
 	 {
 		 snake_opponent.turn(uart_opponent.direction);
@@ -86,7 +97,13 @@ void Game::run(peripheral_handles *handles)
 	 uart_payload.head_y = tampon[snake.getHead()].y;
 	 uart.sendData(uart_payload);
 
-
+	 tile* snake_body = snake.getTampon();
+	 if(SnakeCollision_asm(snake_body,snake.getHead(), snake.getLongueur()))
+	 	{
+	 		state = Init;
+	 		display.clearScreen();
+	 		continue;
+	 	}
 	 snake.move(eat(snake,fruit));
 	 snake.draw();
 	 snake_opponent.draw();
@@ -94,5 +111,3 @@ void Game::run(peripheral_handles *handles)
  }
 }
 
-
-}

@@ -20,16 +20,7 @@
 
 using namespace ELE3312;
 
-// L'adresse de base de l'Unique ID pour la famille STM32F4
-#define STM32F4_UID_BASE 0x1FFF7A10
 
-extern UART_HandleTypeDef huart2;
-
-RingBuffer rx_ring_buffer;
-uint8_t rx_byte;
-const uint8_t COBS_DELIMITER = 0x00;
-
-UartSnakeManager uartManager;
 
 // ==========================================
 // MÉTHODES DE LA CLASSE
@@ -39,6 +30,7 @@ UartSnakeManager::UartSnakeManager(){}
 void UartSnakeManager::setup(UART_HandleTypeDef *huart){
 this->huart = huart;
 }
+
 
 uint8_t UartSnakeManager::negotiatePlayerId() {
     // 1. Lire les 32 premiers bits de l'UID unique de cette puce
@@ -78,30 +70,26 @@ void UartSnakeManager::sendData(const SnakePayload& mySnake) {
     uint8_t encoded_buffer[sizeof(SnakePayload) + 2];
 
     memcpy(raw_buffer, &mySnake, sizeof(SnakePayload));
-
-    // Remplacer par ta vraie fonction : cobs_encode(raw_buffer, sizeof(SnakePayload), encoded_buffer);
     cobsEncode(raw_buffer, sizeof(SnakePayload), encoded_buffer);
     size_t encoded_len = sizeof(SnakePayload);
 
     encoded_buffer[encoded_len] = COBS_DELIMITER;
     encoded_len++;
 
-    HAL_UART_Transmit(&huart2, encoded_buffer, encoded_len, HAL_MAX_DELAY);
+    HAL_UART_Transmit_IT(&huart2, encoded_buffer, encoded_len);
 }
 
 bool UartSnakeManager::receiveData(SnakePayload& opponentSnake) {
     static uint8_t packet_buffer[64];
-    static uint8_t packet_index = 0;
+    static uint8_t packet_index = 0; //erreur ici : revoir la logique
     uint8_t byte_read;
 
     while (rx_ring_buffer.read(byte_read)) {
         if (byte_read == COBS_DELIMITER) {
             if (packet_index > 0) {
                 uint8_t decoded_buffer[64];
-
-                // Remplacer par ta vraie fonction : cobs_decode(packet_buffer, packet_index, decoded_buffer);
-                cobsDecode(packet_buffer, 64, decoded_buffer);
                 memcpy(&opponentSnake, decoded_buffer, sizeof(SnakePayload));
+                cobsDecode(packet_buffer, 64, decoded_buffer);
                 packet_index = 0;
                 return true;
             }
