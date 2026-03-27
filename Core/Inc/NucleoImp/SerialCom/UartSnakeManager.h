@@ -3,7 +3,7 @@
 
 
 #include <NucleoImp/SerialCom/COBS.h>
-#include <NucleoImp/SerialCom/RingBuffer.h>
+#include <NucleoImp/SerialCom/Ringbuffer.h>
 #include <stdint.h>
 #include <cstddef>
 #include "main.h"

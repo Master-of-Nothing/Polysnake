@@ -13,7 +13,7 @@
 
 
 #include <NucleoImp/SerialCom/COBS.h>
-#include <NucleoImp/SerialCom/RingBuffer.h>
+#include <NucleoImp/SerialCom/Ringbuffer.h>
 #include "NucleoImp/SerialCom/UartSnakeManager.h"
 #include "main.h"
 #include <cstring>
