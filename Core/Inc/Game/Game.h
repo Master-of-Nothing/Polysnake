@@ -11,13 +11,13 @@
 #include "Interfaces/Display/Sprite.h"
 #include "NucleoImp/Keypad/KeyPad.h"
 #include "NucleoImp/SerialCom/UartSnakeManager.h"
-#include <NucleoImp/MotionInput/MPU6050MotionInput.h>
+#include "NucleoImp/MotionInput/MPU6050MotionInput.h"
 
 
 
 namespace ELE3312{
 
-enum GameState {Init, Running, Victory };
+	enum GameState {Init, Running, Victory };
 
 class Game
 {
@@ -31,15 +31,15 @@ public :
 private :
 	peripheral_handles *handles = nullptr;
 	// Périphérique
-	static ILI9341Display display;
-	static KeyPad keypad;
-	static MPU6050MotionInput motionInput;
-	static UartSnakeManager uart;
-	static Fruit fruit;
-	static Snake snake;
-	static Snake snake_opponent;
-	static GameState state;
-	static SnakePayload uart_payload;
+	ILI9341Display display;
+	KeyPad keypad;
+	MPU6050MotionInput motionInput;
+	//static UartSnakeManager uart;
+	Fruit* fruit;
+	Snake* snake;
+	//static Snake snake_opponent;
+	GameState state;
+	//static SnakePayload uart_payload;
 
 };
 

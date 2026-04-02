@@ -1,0 +1,59 @@
+#ifndef SNAKE_AUDIO_H
+#define SNAKE_AUDIO_H
+
+#include <cstdint>
+
+// Configuration du système audio
+constexpr uint32_t SAMPLE_RATE = 16000; // Fréquence d'échantillonnage (16 kHz)
+constexpr uint16_t TABLE_SIZE = 512;    // Taille de la période d'une onde (étape 2)
+constexpr uint16_t BUFFER_SIZE = 256;   // Taille d'UN SEUL buffer (la moitié du tableau DMA)
+
+// Structure représentant une note de musique
+struct Note {
+    float frequency;     // Fréquence en Hertz
+    uint32_t duration_ms;// Durée en millisecondes
+};
+
+class SnakeAudio {
+public:
+    enum Waveform { SINE, SQUARE, TRIANGLE };
+
+    SnakeAudio();
+
+    // Initialise la table d'onde avec la forme désirée (étape 3)
+    void Init(Waveform wave);
+
+    // Démarre le DMA et la musique
+    void Start();
+
+    // Machine à états : à appeler chaque milliseconde dans une interruption Timer (étape 5)
+    void UpdateState();
+
+    // Méthodes appelées par les interruptions DMA
+    void ProcessHalfBuffer();
+    void ProcessFullBuffer();
+
+private:
+    uint16_t waveTable[TABLE_SIZE];          // Échantillons d'une période
+    uint16_t dmaBuffer[BUFFER_SIZE * 2];     // Le double buffer continu (étape 1)
+
+    float currentPhase;                      // Phase courante pour la continuité (étape 4)
+    volatile float currentFrequency;         // Fréquence modifiée par la machine à états
+
+    uint32_t noteTimer;
+    uint32_t currentNoteIndex;
+    volatile bool isPlaying;
+
+    // Fonctions internes d'initialisation des formes d'ondes
+    void InitSineTable();
+    void InitSquareTable();
+    void InitTriangleTable();
+
+    // Fonction centrale de remplissage mathématique (étape 4)
+    void FillBuffer(uint16_t* buffer);
+};
+
+// Pointeur global pour faire le lien avec les callbacks C du HAL
+extern SnakeAudio* g_SnakeAudio;
+
+#endif // SNAKE_AUDIO_H

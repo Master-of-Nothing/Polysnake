@@ -11,6 +11,7 @@ namespace ELE3312 {
 class Fruit
 {
 public:
+	Fruit();
     Fruit(ILI9341Display* display);
 
     ~Fruit() = default;

@@ -20,7 +20,9 @@
 
 using namespace ELE3312;
 
+UartSnakeManager uartManager;
 
+const uint8_t COBS_DELIMITER = 0x00;
 
 // ==========================================
 // MÉTHODES DE LA CLASSE
@@ -44,10 +46,10 @@ uint8_t UartSnakeManager::negotiatePlayerId() {
 
     while (!connected) {
         // 2. Envoyer notre UID à l'autre carte
-        HAL_UART_Transmit(&huart2, (uint8_t*)&my_uid, sizeof(my_uid), 500);
+        HAL_UART_Transmit(huart, (uint8_t*)&my_uid, sizeof(my_uid), 500);
 
         // 3. Écouter pour recevoir l'UID adverse (avec un timeout de 500ms)
-        if (HAL_UART_Receive(&huart2, (uint8_t*)&opponent_uid, sizeof(opponent_uid), 500) == HAL_OK) {
+        if (HAL_UART_Receive(huart, (uint8_t*)&opponent_uid, sizeof(opponent_uid), 500) == HAL_OK) {
             connected = true; // On a reçu une réponse !
         }
     }
@@ -60,7 +62,7 @@ uint8_t UartSnakeManager::negotiatePlayerId() {
     }
 
     // 5. La négociation est terminée, on lance l'interruption asynchrone pour le jeu
-    HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+    HAL_UART_Receive_IT(huart, &rx_byte, 1);
 
     return assigned_id;
 }
@@ -76,7 +78,7 @@ void UartSnakeManager::sendData(const SnakePayload& mySnake) {
     encoded_buffer[encoded_len] = COBS_DELIMITER;
     encoded_len++;
 
-    HAL_UART_Transmit_IT(&huart2, encoded_buffer, encoded_len);
+    HAL_UART_Transmit_IT(huart, encoded_buffer, encoded_len);
 }
 
 bool UartSnakeManager::receiveData(SnakePayload& opponentSnake) {
@@ -111,8 +113,8 @@ bool UartSnakeManager::receiveData(SnakePayload& opponentSnake) {
 extern "C" {
     void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
         if (huart->Instance == USART2) {
-            rx_ring_buffer.write(rx_byte);
-            HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+        	uartManager.rx_ring_buffer.write(uartManager.rx_byte);
+            HAL_UART_Receive_IT(huart, &uartManager.rx_byte, 1);
         }
     }
 }

@@ -1,0 +1,9 @@
+../Core/Src/NucleoImp/MotionInput/MPU6050MotionInput.cpp:20:7:void ELE3312::MPU6050MotionInput::setup(I2C_HandleTypeDef*)	1
+../Core/Inc/Interfaces/MotionInput/MotionInput.h:17:7:constexpr ELE3312::MotionInput::MotionInput()	1
+../Core/Src/NucleoImp/MotionInput/MPU6050MotionInput.cpp:28:2:ELE3312::MPU6050MotionInput::MPU6050MotionInput()	1
+../Core/Src/NucleoImp/MotionInput/MPU6050MotionInput.cpp:34:6:virtual void ELE3312::MPU6050MotionInput::update()	1
+../Core/Src/NucleoImp/MotionInput/MPU6050MotionInput.cpp:41:7:virtual float ELE3312::MPU6050MotionInput::getX() const	1
+../Core/Src/NucleoImp/MotionInput/MPU6050MotionInput.cpp:48:7:virtual float ELE3312::MPU6050MotionInput::getY() const	1
+../Core/Src/NucleoImp/MotionInput/MPU6050MotionInput.cpp:56:7:virtual float ELE3312::MPU6050MotionInput::getZ() const	1
+../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h:29:10:ELE3312::MPU6050MotionInput::~MPU6050MotionInput()	1
+../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h:29:10:virtual ELE3312::MPU6050MotionInput::~MPU6050MotionInput()	1

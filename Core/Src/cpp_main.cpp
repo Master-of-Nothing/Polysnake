@@ -29,8 +29,9 @@ using namespace ELE3312;
 
 void cpp_main(peripheral_handles *handles)
 {
-	Game game;
+	static Game game;
 	game.run(handles);
+
 //	display.setup(handles->hspi_tft);
 //	display.clearScreen();
 //	GPIO_TypeDef *gpio = handles->gpio_keypad;

@@ -10,18 +10,19 @@ namespace ELE3312 {
 
 #define TILE_SIZE 10
 
-enum Direction {NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4};
+enum {NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4};
 
 class Snake
 {
 public:
+	Snake();
     Snake(ILI9341Display* display);
 
     ~Snake() = default;
     void draw();
     void clearTail();
     void move(int eat);
-    void turn(Direction direction);
+    void turn(int direction);
     int getHead();
     int getTail();
     int getLastDirection();

@@ -9,7 +9,7 @@
 
 using namespace ELE3312;
 
-void KeyPad(){}
+KeyPad::KeyPad(){}
 
 void KeyPad::setup(GPIO_TypeDef * gpio){
 	this->gpio = gpio;

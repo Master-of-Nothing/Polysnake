@@ -7,11 +7,13 @@
 namespace ELE3312 {
 
 
+Snake::Snake(){}
+
 Snake::Snake(ILI9341Display* display)
 {
     this -> disp = display;
-    this -> head = 8;
-    this -> tail = 0;
+    this -> head = 5;
+    this -> tail = 1;
     this -> longueur = this->getLongueur();
     this -> LastDirection = EAST;
 
@@ -79,7 +81,7 @@ void Snake::move(int eat)
 
 }
 
-void Snake::turn(Direction direction)
+void Snake::turn(int direction)
 {
 	if(!( direction == EAST ||  direction == WEST))
 		return;

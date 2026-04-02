@@ -15,9 +15,6 @@ namespace ELE3312 {
 
 extern UART_HandleTypeDef huart2;
 
-RingBuffer rx_ring_buffer;
-uint8_t rx_byte;
-const uint8_t COBS_DELIMITER = 0x00;
 // Structure des données échangées (doit être identique sur les deux cartes)
 
 struct SnakePayload {
@@ -39,11 +36,11 @@ public:
 
     // Récupère la position de l'adversaire (retourne true si nouveau message complet)
     bool receiveData(SnakePayload& opponentSnake);
-private :
-    UART_HandleTypeDef *huart;
+
     RingBuffer rx_ring_buffer;
     uint8_t rx_byte;
-    const uint8_t COBS_DELIMITER = 0x00;
+private :
+    UART_HandleTypeDef *huart;
 };
 
 }

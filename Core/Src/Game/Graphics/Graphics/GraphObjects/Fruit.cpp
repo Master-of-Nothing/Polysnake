@@ -5,6 +5,8 @@
 
 namespace ELE3312 {
 
+Fruit::Fruit(){};
+
 Fruit::Fruit(ILI9341Display* display)
 {
 	this -> disp = display;
