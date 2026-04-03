@@ -87,7 +87,7 @@ void Game::run(peripheral_handles *handles)
 		 snake->turn(WEST);
 		//uart_payload.direction = WEST;
 	 }
-	 else{
+	 if(keypad.keyPress() == KeyCode::SIX){
 		 snake->turn(EAST);
 		 //uart_payload.direction = EAST;
 	 }
