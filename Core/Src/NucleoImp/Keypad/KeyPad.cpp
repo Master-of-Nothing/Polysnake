@@ -16,7 +16,7 @@ void KeyPad::setup(GPIO_TypeDef * gpio){
 	update();
 }
 
-void KeyPad::update(){
+KeyCode KeyPad::update(){
 	for(uint32_t row = NumRow; row > 0 ; row--)
 			{
 
@@ -31,24 +31,24 @@ void KeyPad::update(){
 						// ROW1_PIN = 0x0010
 						gpio->ODR &= ~0x10;	//ROW1_Pin;
 						//chiffre = 1;
-						HAL_Delay(10);
+						break;
 					case 2:
 						// ROW2_PIN = 0x0020
 						gpio->ODR &= ~0x20;	//ROW2_Pin;
 						//chiffre = 2;
-						HAL_Delay(10);
-						//break;
+						break;
 					case 3:
 						// ROW3_PIN = 0x0040
 						gpio->ODR &= ~0x40;	//ROW3_Pin;
 						//chiffre = 3;
-						HAL_Delay(10);
+						break;
 					case 4:
 						// ROW4_PIN = 0x0100
 						gpio->ODR &= ~0x100; //ROW4_Pin;
 						//chiffre = 4;
-						HAL_Delay(10);
+						break;
 				}
+				HAL_Delay(10);
 
 				// Deuxième chose : on regarde si une touche est présée
 				//On shift les 4 derniers bits de keypressed pour s'assurer que les bits soit à 0
@@ -59,18 +59,16 @@ void KeyPad::update(){
 				// keysPressed : bit 1 indique la position de la colonne pressée
 				keysPressed |= (~gpio->IDR) & 0xF;
 				HAL_Delay(10);
-				if (row == 1 && keysPressed == 2) {
-					key = 2;
-					}
-				else if (row == 2 && keysPressed == 4) {
+				if (row == 2 && keysPressed == 4) {
 					key = 6;
-					}
-				else if (row == 3 && keysPressed == 2) {
-					key = 8;
+					return KeyCode::SIX;
 					}
 				else if (row == 2 && keysPressed == 1) {
 					key = 4;
+					return KeyCode::FOUR;
 					}
+				else
+					return KeyCode::UNKNOWN;
 			}
 }
 
@@ -81,8 +79,8 @@ KeyCode KeyPad::keyPress(){
 				return KeyCode::FOUR;
 			case 6 :
 				return KeyCode::SIX;
-			default:
-				return KeyCode::ZERO;
+			default :
+				return KeyCode::UNKNOWN;
 		}
 }
 

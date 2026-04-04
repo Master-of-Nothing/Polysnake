@@ -12,6 +12,7 @@
 #include "NucleoImp/Keypad/KeyPad.h"
 #include "NucleoImp/SerialCom/UartSnakeManager.h"
 #include "NucleoImp/MotionInput/MPU6050MotionInput.h"
+#include "NucleoImp/Sound/SnakeAudio.h"
 
 
 
@@ -34,6 +35,7 @@ private :
 	ILI9341Display display;
 	KeyPad keypad;
 	MPU6050MotionInput motionInput;
+	SnakeAudio audio;
 	//static UartSnakeManager uart;
 	Fruit* fruit;
 	Snake* snake;

@@ -69,7 +69,9 @@ void SnakeAudio::Start() {
 // Fonction centrale (Étape 4) : remplit la zone mémoire spécifiée
 void SnakeAudio::FillBuffer(uint16_t* buffer) {
     if (!isPlaying) {
-        for (int i = 0; i < BUFFER_SIZE; i++) buffer[i] = 2048; // Silence (milieu du DAC)
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+        	buffer[i] = 2048; // Silence (milieu du DAC)
+        }
         return;
     }
 
@@ -124,5 +126,10 @@ extern "C" {
     // Appelé quand le DMA a fini de lire la DEUXIÈME moitié du buffer
     void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac) {
         if (g_SnakeAudio) g_SnakeAudio->ProcessFullBuffer();
+    }
+    void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+    	if(htim->Instance == TIM6){
+    		if (g_SnakeAudio) g_SnakeAudio->UpdateState();
+    	}
     }
 }

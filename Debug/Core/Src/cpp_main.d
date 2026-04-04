@@ -54,7 +54,8 @@ Core/Src/cpp_main.o: ../Core/Src/cpp_main.cpp ../Core/Inc/main.h \
  ../Core/Inc/NucleoImp/Keypad/KeyPad.h \
  ../Core/Inc/NucleoImp/SerialCom/UartSnakeManager.h \
  ../Core/Inc/NucleoImp/SerialCom/COBS.h \
- ../Core/Inc/NucleoImp/SerialCom/Ringbuffer.h
+ ../Core/Inc/NucleoImp/SerialCom/Ringbuffer.h \
+ ../Core/Inc/NucleoImp/Sound/SnakeAudio.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -114,3 +115,4 @@ Core/Src/cpp_main.o: ../Core/Src/cpp_main.cpp ../Core/Inc/main.h \
 ../Core/Inc/NucleoImp/SerialCom/UartSnakeManager.h:
 ../Core/Inc/NucleoImp/SerialCom/COBS.h:
 ../Core/Inc/NucleoImp/SerialCom/Ringbuffer.h:
+../Core/Inc/NucleoImp/Sound/SnakeAudio.h:

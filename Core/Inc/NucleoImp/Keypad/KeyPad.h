@@ -37,7 +37,7 @@ class KeyPad {
 		KeyPad();
 		~KeyPad() =  default;
 		void setup(GPIO_TypeDef * gpio);
-		void update();
+		KeyCode update();
 		KeyCode keyPress();
 	private :
 		GPIO_TypeDef * gpio = nullptr;

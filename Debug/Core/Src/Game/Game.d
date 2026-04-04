@@ -54,7 +54,8 @@ Core/Src/Game/Game.o: ../Core/Src/Game/Game.cpp ../Core/Inc/Game/Game.h \
  ../Core/Inc/NucleoImp/SerialCom/Ringbuffer.h \
  ../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h \
  ../Core/Inc/Interfaces/MotionInput/MotionInput.h \
- ../Core/Inc/NucleoImp/MotionInput/mpu6050.h
+ ../Core/Inc/NucleoImp/MotionInput/mpu6050.h \
+ ../Core/Inc/NucleoImp/Sound/SnakeAudio.h
 ../Core/Inc/Game/Game.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
@@ -114,3 +115,4 @@ Core/Src/Game/Game.o: ../Core/Src/Game/Game.cpp ../Core/Inc/Game/Game.h \
 ../Core/Inc/NucleoImp/MotionInput/MPU6050MotionInput.h:
 ../Core/Inc/Interfaces/MotionInput/MotionInput.h:
 ../Core/Inc/NucleoImp/MotionInput/mpu6050.h:
+../Core/Inc/NucleoImp/Sound/SnakeAudio.h:

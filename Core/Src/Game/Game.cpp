@@ -1,5 +1,8 @@
 
 #include "Game/Game.h"
+#include "main.h"
+
+extern TIM_HandleTypeDef htim6;
 
 using namespace ELE3312;
 
@@ -55,6 +58,9 @@ void Game::setup(peripheral_handles *handles)
 	keypad.setup(handles->gpio_keypad); //On utilise pas le fichier Keypad pour l'instant
 	motionInput.setup(handles->hi2c);
 	//uart.setup(handles->huart);
+	HAL_TIM_Base_Start_IT(&htim6);
+	audio.Init(SnakeAudio::SQUARE);
+	audio.Start();
 
 	if(this->fruit == nullptr)
 		this->fruit = new Fruit(&display);
@@ -82,31 +88,43 @@ void Game::run(peripheral_handles *handles)
 	 {
 		 snake_opponent.turn(uart_opponent.direction);
 	 }*/
-	 keypad.update();
-	 if(keypad.keyPress() == KeyCode::FOUR){
+	 if(!(HAL_GetTick()%100))
+		 audio.UpdateState();
+	 //keypad.update(); // keypad.keyPress()
+	 switch(keypad.update()){
+	 	 case (KeyCode::FOUR) :
+				snake->turn(WEST);
+	 	 case (KeyCode::SIX) :
+				snake->turn(EAST);
+	 	 case( KeyCode::UNKNOWN):
+	 			 break;
+	 }
+
+
+	/* if(keypad.keyPress() == KeyCode::FOUR){
 		 snake->turn(WEST);
 		//uart_payload.direction = WEST;
 	 }
-	 if(keypad.keyPress() == KeyCode::SIX){
+	 else if(keypad.keyPress() == KeyCode::SIX){
 		 snake->turn(EAST);
 		 //uart_payload.direction = EAST;
-	 }
+	 }*/
 //	 tile *tampon = snake.getTampon();
 //	 uart_payload.head_x = tampon[snake->getHead()].x;
 //	 uart_payload.head_y = tampon[snake->getHead()].y;
 //	 uart.sendData(uart_payload);
 
-//	 tile* snake_body = snake->getTampon();
-//	 if(SnakeCollision_asm(snake->getTampon(),snake->getHead(), snake->getLongueur()))
-//	 	{
-//	 		state = Init;
-//	 		display.clearScreen();
-//	 		continue;
-//	 	}
+
+	 if(SnakeCollision_asm(snake->getTampon(),snake->getHead(), snake->getLongueur()))
+	 	{
+	 		state = Init;
+	 		display.clearScreen();
+	 		continue;
+	 	}
 	 snake->move(eat(*snake,*fruit));
 	 snake->draw();
 	 //snake_opponent.draw();
-	 HAL_Delay(100);
+	 HAL_Delay(200);
  }
 }
 
