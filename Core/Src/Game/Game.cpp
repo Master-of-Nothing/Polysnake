@@ -2,7 +2,7 @@
 #include "Game/Game.h"
 #include "main.h"
 
-extern TIM_HandleTypeDef htim6;
+
 
 using namespace ELE3312;
 
@@ -58,8 +58,7 @@ void Game::setup(peripheral_handles *handles)
 	keypad.setup(handles->gpio_keypad); //On utilise pas le fichier Keypad pour l'instant
 	motionInput.setup(handles->hi2c);
 	//uart.setup(handles->huart);
-	HAL_TIM_Base_Start_IT(&htim6);
-	audio.Init(SnakeAudio::SQUARE);
+	audio.Init(handles->hdac,handles->htim_dac,SnakeAudio::SQUARE);
 	audio.Start();
 
 	if(this->fruit == nullptr)
@@ -88,17 +87,24 @@ void Game::run(peripheral_handles *handles)
 	 {
 		 snake_opponent.turn(uart_opponent.direction);
 	 }*/
-	 if(!(HAL_GetTick()%100))
-		 audio.UpdateState();
+	 /*uint32_t time = HAL_GetTick()%100;
+	 audio.UpdateState();
+	 if(time < 40)
+		 audio.UpdateState();*/
 	 //keypad.update(); // keypad.keyPress()
-	 switch(keypad.update()){
+
+	 if(keypad.update() == KeyCode::FOUR)
+		 snake->turn(WEST);
+	 else if(keypad.update() == KeyCode::SIX)
+		 snake->turn(EAST);
+	 /*switch(keypad.update()){
 	 	 case (KeyCode::FOUR) :
 				snake->turn(WEST);
 	 	 case (KeyCode::SIX) :
 				snake->turn(EAST);
 	 	 case( KeyCode::UNKNOWN):
 	 			 break;
-	 }
+	 }*/
 
 
 	/* if(keypad.keyPress() == KeyCode::FOUR){

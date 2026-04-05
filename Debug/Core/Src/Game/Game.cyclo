@@ -2,4 +2,4 @@
 ../Core/Src/Game/Game.cpp:16:5:int eat(ELE3312::Snake&, ELE3312::Fruit&)	9
 ../Core/Src/Game/Game.cpp:50:1:ELE3312::Game::Game()	1
 ../Core/Src/Game/Game.cpp:53:6:void ELE3312::Game::setup(peripheral_handles*)	3
-../Core/Src/Game/Game.cpp:78:6:void ELE3312::Game::run(peripheral_handles*)	9
+../Core/Src/Game/Game.cpp:77:6:void ELE3312::Game::run(peripheral_handles*)	6

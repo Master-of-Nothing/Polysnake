@@ -5,7 +5,6 @@
 #include "main.h" // Nécessaire pour inclure les types HAL (comme DAC_HandleTypeDef)
 
 // Variable globale HAL générée par CubeMX (à adapter selon votre timer/dac)
-extern DAC_HandleTypeDef hdac;
 
 SnakeAudio* g_SnakeAudio = nullptr;
 
@@ -19,13 +18,16 @@ const Note melody[20] = {
 };
 constexpr uint32_t MELODY_LENGTH = 20;
 
-SnakeAudio::SnakeAudio() : currentPhase(0.0f), currentFrequency(0.0f),
-                           noteTimer(0), currentNoteIndex(0), isPlaying(false) {
-    g_SnakeAudio = this; // Assigne l'instance en cours au pointeur global
+SnakeAudio::SnakeAudio() : currentPhase(0.0f), currentFrequency(0.0f), noteTimer(0), currentNoteIndex(0), isPlaying(false) {
+	g_SnakeAudio = this; // Assigne l'instance en cours au pointeur global
 }
 
-void SnakeAudio::Init(Waveform wave) {
-    switch(wave) {
+void SnakeAudio::Init(DAC_HandleTypeDef *hdac, TIM_HandleTypeDef *htim, Waveform wave) {
+
+	this->hdac = hdac;
+	this->htim = htim;
+	HAL_TIM_Base_Start(htim);
+	switch(wave) {
         case SINE: InitSineTable(); break;
         case SQUARE: InitSquareTable(); break;   // Parfait pour un rendu "chiptune" 8-bit !
         case TRIANGLE: InitTriangleTable(); break;
@@ -35,7 +37,7 @@ void SnakeAudio::Init(Waveform wave) {
 void SnakeAudio::InitSineTable() {
     for (int i = 0; i < TABLE_SIZE; i++) {
         // Formule pour le DAC 12 bits : valeurs comprises entre 0 et 4095
-        waveTable[i] = (uint16_t)(2047.0 * sin(2.0 * M_PI * i / TABLE_SIZE) + 2048.0);
+        waveTable[i] = (uint16_t)(2047.0 * sin(2.0 * pi * i / TABLE_SIZE) + 2048.0);
     }
 }
 
@@ -63,7 +65,7 @@ void SnakeAudio::Start() {
 
     // Lancement du transfert DMA sur la totalité du tableau (les 2 buffers en même temps)
     // Le HAL gérera automatiquement les moitiés avec le mode "Circular".
-    HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, (uint32_t*)dmaBuffer, BUFFER_SIZE * 2, DAC_ALIGN_12B_R);
+    HAL_DAC_Start_DMA(hdac, DAC_CHANNEL_1, (uint32_t*)dmaBuffer, BUFFER_SIZE * 2, DAC_ALIGN_12B_R);
 }
 
 // Fonction centrale (Étape 4) : remplit la zone mémoire spécifiée

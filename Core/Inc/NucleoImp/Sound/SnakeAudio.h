@@ -2,6 +2,7 @@
 #define SNAKE_AUDIO_H
 
 #include <cstdint>
+#include "main.h"
 
 // Configuration du système audio
 constexpr uint32_t SAMPLE_RATE = 16000; // Fréquence d'échantillonnage (16 kHz)
@@ -21,7 +22,7 @@ public:
     SnakeAudio();
 
     // Initialise la table d'onde avec la forme désirée (étape 3)
-    void Init(Waveform wave);
+    void Init(DAC_HandleTypeDef *hdac, TIM_HandleTypeDef *htim,Waveform wave);
 
     // Démarre le DMA et la musique
     void Start();
@@ -34,6 +35,11 @@ public:
     void ProcessFullBuffer();
 
 private:
+    DAC_HandleTypeDef *hdac;
+    TIM_HandleTypeDef *htim;
+
+    constexpr static float pi{3.1415926535f};
+
     uint16_t waveTable[TABLE_SIZE];          // Échantillons d'une période
     uint16_t dmaBuffer[BUFFER_SIZE * 2];     // Le double buffer continu (étape 1)
 

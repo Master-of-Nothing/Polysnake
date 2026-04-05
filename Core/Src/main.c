@@ -141,7 +141,7 @@ int main(void)
   	  .hadc = &hadc1,
   	  .gpio_keypad = GPIOC
     };
-
+  HAL_TIM_Base_Start_IT(&htim6);
   // Run CPP main
   cpp_main(&handles);
 
