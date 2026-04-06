@@ -60,28 +60,22 @@ KeyCode KeyPad::update(){
 				keysPressed |= (~gpio->IDR) & 0xF;
 				HAL_Delay(10);
 				if (row == 2 && keysPressed == 4) {
-					key = 6;
-					return KeyCode::SIX;
+					keypressed = 1;
+					return key = KeyCode::SIX;
 					}
 				else if (row == 2 && keysPressed == 1) {
-					key = 4;
-					return KeyCode::FOUR;
+					keypressed = 1;
+					return key = KeyCode::FOUR;
 					}
-				else
-					return KeyCode::UNKNOWN;
 			}
+	keypressed = 0;
+	return  key = KeyCode::UNKNOWN;
 }
 
 KeyCode KeyPad::keyPress(){
-		switch (this->key)
-		{
-			case 4 :
-				return KeyCode::FOUR;
-			case 6 :
-				return KeyCode::SIX;
-			default :
-				return KeyCode::UNKNOWN;
-		}
+	if(!keypressed) // aucune touche a été nouvellement préssée
+		return KeyCode::UNKNOWN;
+	return key;
 }
 
 

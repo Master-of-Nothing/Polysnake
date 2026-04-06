@@ -41,7 +41,8 @@ class KeyPad {
 		KeyCode keyPress();
 	private :
 		GPIO_TypeDef * gpio = nullptr;
-		uint32_t key = 0;
+		uint8_t keypressed = 0;
+		KeyCode key;
 		const uint32_t NumRow = 4;
 	};
 
