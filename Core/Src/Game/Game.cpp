@@ -87,24 +87,11 @@ void Game::run(peripheral_handles *handles)
 	 {
 		 snake_opponent.turn(uart_opponent.direction);
 	 }*/
-	 /*uint32_t time = HAL_GetTick()%100;
-	 audio.UpdateState();
-	 if(time < 40)
-		 audio.UpdateState();*/
-	 //keypad.update(); // keypad.keyPress()
 
 	 if(keypad.update() == KeyCode::FOUR)
 		 snake->turn(WEST);
 	 else if(keypad.update() == KeyCode::SIX)
 		 snake->turn(EAST);
-	 /*switch(keypad.update()){
-	 	 case (KeyCode::FOUR) :
-				snake->turn(WEST);
-	 	 case (KeyCode::SIX) :
-				snake->turn(EAST);
-	 	 case( KeyCode::UNKNOWN):
-	 			 break;
-	 }*/
 
 
 	/* if(keypad.keyPress() == KeyCode::FOUR){

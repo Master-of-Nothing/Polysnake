@@ -2,13 +2,12 @@
 #include "NucleoImp/Sound/SnakeAudio.h"
 
 #include <cmath>
-#include "main.h" // Nécessaire pour inclure les types HAL (comme DAC_HandleTypeDef)
+#include "main.h"
 
-// Variable globale HAL générée par CubeMX (à adapter selon votre timer/dac)
 
 SnakeAudio* g_SnakeAudio = nullptr;
 
-// Étape 6 : Mélodie rétro de 20 notes (Thème classique de type Korobeiniki/Tetris)
+// Mélodie rétro de 20 notes (Thème classique de Tetris)
 const Note melody[20] = {
     {659.25, 150}, {493.88, 75}, {523.25, 75}, {587.33, 150},
     {523.25, 75}, {493.88, 75}, {440.00, 150}, {440.00, 75},
@@ -19,7 +18,7 @@ const Note melody[20] = {
 constexpr uint32_t MELODY_LENGTH = 20;
 
 SnakeAudio::SnakeAudio() : currentPhase(0.0f), currentFrequency(0.0f), noteTimer(0), currentNoteIndex(0), isPlaying(false) {
-	g_SnakeAudio = this; // Assigne l'instance en cours au pointeur global
+	g_SnakeAudio = this; // Assigne l'instance en cours au pointeur global, test : fonctionne bien
 }
 
 void SnakeAudio::Init(DAC_HandleTypeDef *hdac, TIM_HandleTypeDef *htim, Waveform wave) {
@@ -29,14 +28,14 @@ void SnakeAudio::Init(DAC_HandleTypeDef *hdac, TIM_HandleTypeDef *htim, Waveform
 	HAL_TIM_Base_Start(htim);
 	switch(wave) {
         case SINE: InitSineTable(); break;
-        case SQUARE: InitSquareTable(); break;   // Parfait pour un rendu "chiptune" 8-bit !
+        case SQUARE: InitSquareTable(); break;
         case TRIANGLE: InitTriangleTable(); break;
     }
 }
 
 void SnakeAudio::InitSineTable() {
     for (int i = 0; i < TABLE_SIZE; i++) {
-        // Formule pour le DAC 12 bits : valeurs comprises entre 0 et 4095
+        // Formule pour le DAC 12 bits : valeurs comprises entre 0 et 4095, 2048 pour la moitié de 4096
         waveTable[i] = (uint16_t)(2047.0 * sin(2.0 * pi * i / TABLE_SIZE) + 2048.0);
     }
 }
@@ -63,12 +62,11 @@ void SnakeAudio::Start() {
     currentFrequency = melody[0].frequency;
     isPlaying = true;
 
-    // Lancement du transfert DMA sur la totalité du tableau (les 2 buffers en même temps)
-    // Le HAL gérera automatiquement les moitiés avec le mode "Circular".
+    // Lancement du transfert DMA sur la totalité du tableau (les 2 buffers en même temps), dma est mit en option circulaire
     HAL_DAC_Start_DMA(hdac, DAC_CHANNEL_1, (uint32_t*)dmaBuffer, BUFFER_SIZE * 2, DAC_ALIGN_12B_R);
 }
 
-// Fonction centrale (Étape 4) : remplit la zone mémoire spécifiée
+// fonction permettant de remplir la zone mémoire spécifiée, utiliser pour la double buffer
 void SnakeAudio::FillBuffer(uint16_t* buffer) {
     if (!isPlaying) {
         for (int i = 0; i < BUFFER_SIZE; i++) {
@@ -85,7 +83,7 @@ void SnakeAudio::FillBuffer(uint16_t* buffer) {
 
         currentPhase += phaseIncrement;
         if (currentPhase >= TABLE_SIZE) {
-            currentPhase -= TABLE_SIZE; // Assure la continuité de phase !
+            currentPhase -= TABLE_SIZE; // Assure la continuité de phase
         }
     }
 }
@@ -98,7 +96,7 @@ void SnakeAudio::ProcessFullBuffer() {
     FillBuffer(&dmaBuffer[BUFFER_SIZE]); // Remplit la seconde moitié
 }
 
-// Étape 5 : La machine à états
+// fonction gérant la machine à états de la mélodie
 void SnakeAudio::UpdateState() {
     if (!isPlaying) return;
 
@@ -129,6 +127,7 @@ extern "C" {
     void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac) {
         if (g_SnakeAudio) g_SnakeAudio->ProcessFullBuffer();
     }
+    // Appelé quand le timer6 lance une interruption toute les 1 millisecondes, mets à jour la machine à état
     void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
     	if(htim->Instance == TIM6){
     		if (g_SnakeAudio) g_SnakeAudio->UpdateState();
