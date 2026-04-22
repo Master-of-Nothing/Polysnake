@@ -19,6 +19,7 @@ public:
     void clear(int xPos, int yPos);
     bool find(int xPos, int yPos);
     tile* getFruit();
+    void reset();
 
 private:
     ILI9341Display* disp;

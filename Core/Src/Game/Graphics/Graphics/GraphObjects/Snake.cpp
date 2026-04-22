@@ -27,7 +27,6 @@ Snake::Snake(ILI9341Display* display)
         }
     for (int i = 0; i < this->getLongueur(); i++)
     {
-    	//printf(" valeur de i dans init : %d",i);
     	int position = this->relativePos(i);
     	tampon[position].x = xInit + (i * TILE_SIZE);
     	tampon[position].y = yInit;
@@ -181,6 +180,30 @@ void Snake::newPosition(int xPos, int yPos)
 				tampon[head].y = yPos;
 				tampon[head].x = xPos - TILE_SIZE;
 			}
+}
+
+void Snake::reset()
+{
+	// Réinitialise la longueur et la direction par défaut
+	this -> head = 5;
+	this -> tail = 1;
+	this -> longueur = this->getLongueur();
+	this -> LastDirection = EAST;
+	int xInit = (rand() % 31) * 10;//10;
+	int yInit = (rand() % 23) * 10;//10;
+		for (int i = 0; i < MaxLength; i++)
+	    	{
+	        tampon[i].x = 0;
+	        tampon[i].y = 0;
+	        tampon[i].id = empty;
+	        }
+	    for (int i = 0; i < this->getLongueur(); i++)
+	    {
+	    	int position = this->relativePos(i);
+	    	tampon[position].x = xInit + (i * TILE_SIZE);
+	    	tampon[position].y = yInit;
+	    	tampon[position].id = (position == head) ? snakehead : snakebody;
+	    }
 }
 
 }

@@ -27,6 +27,7 @@ public :
 	~Game() = default;
 	void setup(peripheral_handles *handles);
 	void run(peripheral_handles *handles);
+	void update();
 
 
 private :
@@ -42,6 +43,20 @@ private :
 	//static Snake snake_opponent;
 	GameState state;
 	//static SnakePayload uart_payload;
+	int menuSelection; // 0 = Solo, 1 = Multi
+
+	// Variables pour les options en jeu
+	bool useAccelerometer;
+	uint32_t gameSpeedDelay;
+	uint32_t lastMoveTime;
+
+	// Nouvelles méthodes internes
+	void drawMainMenu();
+	void drawMenuCursor(int selection);
+	void updateMenu(KeyCode key);
+	void triggerGameOver();
+	void updateGameOver(KeyCode key);
+	void resetGameObjects();
 
 };
 

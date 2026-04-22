@@ -112,6 +112,21 @@ void SnakeAudio::UpdateState() {
         currentFrequency = melody[currentNoteIndex].frequency;
         noteTimer = melody[currentNoteIndex].duration_ms;
     }
+
+}
+
+void SnakeAudio::setTrack(Track trackName)
+{
+	/*// A modifier car
+	if (trackName == TRACK_MENU) {
+	        currentMelody = melodyMenu; // Remplace par ta variable de tableau actif
+	        currentMelodyLength = sizeof(melodyMenu) / sizeof(float);
+	    }
+	    else if (trackName == TRACK_GAME) {
+	        currentMelody = melodyGame;
+	        currentMelodyLength = sizeof(melodyGame) / sizeof(float);
+	    }
+	    currentNoteIndex = 0; // Recommence au début de la piste*/
 }
 
 // =========================================================================

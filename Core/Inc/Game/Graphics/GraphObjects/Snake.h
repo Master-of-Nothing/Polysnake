@@ -29,6 +29,7 @@ public:
     int getLongueur();
     tile* getTampon();
     int relativePos(int i);
+    void reset();
 
 private:
     void newPosition(int xPos, int yPos);

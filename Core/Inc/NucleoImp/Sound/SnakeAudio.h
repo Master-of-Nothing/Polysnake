@@ -9,6 +9,13 @@ constexpr uint32_t SAMPLE_RATE = 16000; // Fréquence d'échantillonnage (16 kHz
 constexpr uint16_t TABLE_SIZE = 512;    // Taille de la période d'une onde
 constexpr uint16_t BUFFER_SIZE = 256;   // Taille d'UN seul buffer (la moitié du tableau DMA)
 
+
+// Structure représentant quel musique joué en fonction de la machine à état
+enum Track {
+    TRACK_MENU,
+    TRACK_GAME
+};
+
 // Structure représentant une note de musique
 struct Note {
     float frequency;     // Fréquence en Hertz
@@ -33,6 +40,9 @@ public:
     // Méthodes appelées par les interruptions DMA
     void ProcessHalfBuffer();
     void ProcessFullBuffer();
+
+    // Méthode pour changer la musique en cours
+    void setTrack(Track trackName);
 
 private:
     DAC_HandleTypeDef *hdac;

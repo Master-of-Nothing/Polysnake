@@ -61,4 +61,14 @@ bool Fruit::find(int xPos, int yPos)
 	return 0;
 }
 
+void Fruit::reset()
+{
+	for (int i = 0; i <= LISTE_FRUITS; i++)
+	    {
+	    	fruits[i].x = (rand() % 31) * 10 + i * TILE_SIZE;
+	    	fruits[i].y = ((rand() % 23)) * 10;
+	    	fruits[i].id = 3 + (rand() % 4);
+	    }
+}
+
 }
