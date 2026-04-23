@@ -44,6 +44,14 @@ class KeyPad {
 		uint8_t keypressed = 0;
 		KeyCode key;
 		const uint32_t NumRow = 4;
+		const uint32_t NumColum = 4;
+
+		KeyCode keyboard[4][4] = {
+				{ELE3312::KeyCode::ONE, ELE3312::KeyCode::TWO, ELE3312::KeyCode::THREE, ELE3312::KeyCode::A}, // Row 0
+				{ELE3312::KeyCode::FOUR, ELE3312::KeyCode::FIVE, ELE3312::KeyCode::SIX, ELE3312::KeyCode::B}, // Row 1
+				{ELE3312::KeyCode::SEVEN, ELE3312::KeyCode::EIGHT, ELE3312::KeyCode::NINE, ELE3312::KeyCode::C}, // Row 2
+				{ELE3312::KeyCode::STAR, ELE3312::KeyCode::ZERO, ELE3312::KeyCode::OCTOTHORPE, ELE3312::KeyCode::D} // Row 3
+		};
 	};
 
 }

@@ -9,6 +9,7 @@
 #include "Game/Graphics/GraphObjects/Snake.h"
 #include "Game/Graphics/GraphObjects/Fruit.h"
 #include "Interfaces/Display/Sprite.h"
+#include "Interfaces/Display/Display.h"
 #include "NucleoImp/Keypad/KeyPad.h"
 #include "NucleoImp/SerialCom/UartSnakeManager.h"
 #include "NucleoImp/MotionInput/MPU6050MotionInput.h"
@@ -18,7 +19,7 @@
 
 namespace ELE3312{
 
-	enum GameState {Init, Running, Victory };
+	enum GameState {Init, Menu, Running, Game_Over };
 
 class Game
 {
@@ -55,8 +56,9 @@ private :
 	void drawMenuCursor(int selection);
 	void updateMenu(KeyCode key);
 	void triggerGameOver();
-	void updateGameOver(KeyCode key);
+	void updateGameOver();
 	void resetGameObjects();
+	void collision();
 
 };
 

@@ -17,6 +17,7 @@ void KeyPad::setup(GPIO_TypeDef * gpio){
 }
 
 KeyCode KeyPad::update(){
+	keypressed = 0; // remets état du clavier à aucune touche préssée
 	for(uint32_t row = NumRow; row > 0 ; row--)
 			{
 
@@ -52,23 +53,39 @@ KeyCode KeyPad::update(){
 
 				// Deuxième chose : on regarde si une touche est présée
 				//On shift les 4 derniers bits de keypressed pour s'assurer que les bits soit à 0
-				uint32_t keysPressed = 0;
+				uint32_t keysPressed = 0;// = 0
 				keysPressed = keysPressed << 4;
 				// IDR : dans les quatres derniers bits, celui qui passe à zero est celui ou une touche de la colonne à été pressé
 				// 0xF : masque definnissant le nombre de colonne
 				// keysPressed : bit 1 indique la position de la colonne pressée
 				keysPressed |= (~gpio->IDR) & 0xF;
 				HAL_Delay(10);
-				if (row == 2 && keysPressed == 4) {
+
+
+				uint8_t colum = 0;
+				if( keysPressed == 1){
+					colum = 0;
+					keypressed = 1;}
+				else if( keysPressed == 2){
+					colum = 1;
+					keypressed = 1;}
+				else if( keysPressed == 4){
+					colum = 2;
+					keypressed = 1;}
+				else if( keysPressed == 4){
+					colum = 3;
+					keypressed = 1;}
+				if(keypressed) return key = keyboard[row - 1][colum];
+
+				/*if (row == 2 && keysPressed == 4) {
 					keypressed = 1;
 					return key = KeyCode::SIX;
 					}
 				else if (row == 2 && keysPressed == 1) {
 					keypressed = 1;
 					return key = KeyCode::FOUR;
-					}
+					}*/
 			}
-	keypressed = 0;
 	return  key = KeyCode::UNKNOWN;
 }
 

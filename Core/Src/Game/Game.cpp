@@ -1,7 +1,9 @@
 
 #include "Game/Game.h"
 #include "main.h"
-
+#include "Interfaces/Display/Display.h"
+#include "Game/Graphics/GraphObjects/Snake.h"
+#include "Game/Graphics/GraphObjects/Fruit.h"
 
 
 using namespace ELE3312;
@@ -71,7 +73,7 @@ void Game::setup(peripheral_handles *handles)
 	//snake_opponent.draw();
 	//uart_payload.player_id = uart.negotiatePlayerId();
 	//audio->setTrack(TRACK_MENU); // Lance la musique du menu
-	drawMainMenu();
+	//drawMainMenu();
 
 	menuSelection = 0;
 	useAccelerometer = false;
@@ -129,12 +131,59 @@ void Game::run(peripheral_handles *handles)
  }
 }
 
+void Game::collision() // A compléter
+{
+	int LastDirection = snake->getLastDirection();
+	int head = snake->getHead();
+	tile* tampon = snake->getTampon();
+	switch(LastDirection)
+	{
+		case NORTH :
+			if(tampon[head].y - TILE_SIZE  < 0)
+				////
+		case EAST :
+			if(tampon[head].x + TILE_SIZE > 320  )
+				///
+		case SOUTH :
+			if(tampon[head].y + TILE_SIZE > 240 )
+				///
+		case  WEST :
+			if(tampon[head].x - TILE_SIZE < 0);
+				///
+	}
+	if(SnakeCollision_asm(snake->getTampon(),snake->getHead(), snake->getLongueur()));
+}
+
+void Game::resetGameObjects() {
+    // Aucune fuite mémoire, on réinitialise simplement les variables
+    snake->reset();
+    fruit->reset();
+    gameSpeedDelay = 200; // Remet la vitesse par défaut
+}
+
+void Game::triggerGameOver() {
+    state = Game_Over;
+    //audio->setTrack(TRACK_MENU); // Musique calme pour le Game Over -> Non fonctionnel : a faire
+
+    display.clearScreen();
+    display.drawString(140, 100, "GAME OVER", Color::RED);//drawString(40, 100, "GAME OVER", COLOR_RED, 3);
+    display.drawString(100, 180, "Appuyer sur la Touche 5 pour revenir au Menu", Color::WHITE); // drawString(20, 180, "Touche 5 pour Menu", COLOR_WHITE, 2);
+}
+
+void Game::updateGameOver() {
+    if (keypad.update() == KeyCode::FOUR) {
+        state = Menu; // à revoir
+        menuSelection = 0;
+        //drawMainMenu(); pas fonctionnel encore
+    }
+}
+
 void Game::drawMainMenu()
 {
-	display->clearScreen();
+	display.clearScreen();
 
 	// Titre
-	display->drawText(40, 30, "POLYSNAKE", COLOR_GREEN, 3);
+	display.drawString(40, 30, "POLYSNAKE", Color::GREEN);
 
 	// Boutons
 	display->drawRect(60, 100, 120, 40, COLOR_WHITE);
@@ -146,7 +195,7 @@ void Game::drawMainMenu()
 	drawMenuCursor(menuSelection);
 }
 
-void Game::drawMenuCursor(int selection)
+/*void Game::drawMenuCursor(int selection)
 {
 	// Efface l'ancien curseur
 	 display->fillRect(30, 100, 20, 100, COLOR_BLACK);
@@ -267,5 +316,5 @@ void Game::update() {
             updateGameOver(key);
             break;
     }
-}
+}*/
 
