@@ -2,9 +2,12 @@ C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.external
 ../Core/Src/Game/Game.cpp:18:5:int eat(ELE3312::Snake&, ELE3312::Fruit&)	9
 ../Core/Src/Game/Game.cpp:52:1:ELE3312::Game::Game()	1
 ../Core/Src/Game/Game.cpp:55:6:void ELE3312::Game::setup(peripheral_handles*)	3
-../Core/Src/Game/Game.cpp:87:6:void ELE3312::Game::run(peripheral_handles*)	6
-../Core/Src/Game/Game.cpp:134:6:void ELE3312::Game::collision()	6
-../Core/Src/Game/Game.cpp:157:6:void ELE3312::Game::resetGameObjects()	1
-../Core/Src/Game/Game.cpp:164:6:void ELE3312::Game::triggerGameOver()	1
-../Core/Src/Game/Game.cpp:173:6:void ELE3312::Game::updateGameOver()	2
+../Core/Src/Game/Game.cpp:87:6:void ELE3312::Game::run(peripheral_handles*)	7
+../Core/Src/Game/Game.cpp:136:6:void ELE3312::Game::collision()	6
+../Core/Src/Game/Game.cpp:159:6:void ELE3312::Game::resetGameObjects()	1
+../Core/Src/Game/Game.cpp:168:6:void ELE3312::Game::triggerGameOver()	1
+../Core/Src/Game/Game.cpp:177:6:void ELE3312::Game::updateGameOver()	2
+../Core/Src/Game/Game.cpp:187:6:void ELE3312::Game::drawMainMenu()	1
+../Core/Src/Game/Game.cpp:204:6:void ELE3312::Game::drawMenuCursor()	2
+../Core/Src/Game/Game.cpp:214:6:void ELE3312::Game::updateMenu(ELE3312::KeyCode)	4
 C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344\tools\arm-none-eabi\include\c++\13.3.1\bits\new_allocator.h:104:7:std::__new_allocator<_Tp>::~__new_allocator() [with _Tp = char]	1

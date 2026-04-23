@@ -86,13 +86,14 @@ void Game::setup(peripheral_handles *handles)
 
 void Game::run(peripheral_handles *handles)
 {
-	if(this->state == Init)
-		this->setup(handles);
+	if(state == Init)
+		setup(handles);
 	//SnakePayload uart_opponent;
  while(1)
  {
-	 if(this->state == Init)
-	 		this->setup(handles);
+	 /*drawMainMenu();
+	 while(keypad.update() != KeyCode::FIVE)*/ //fonctionne mais a ameliorer
+
 	/* if(uart.receiveData(uart_opponent))
 	 {
 		 snake_opponent.turn(uart_opponent.direction);
@@ -161,6 +162,8 @@ void Game::resetGameObjects() {
     gameSpeedDelay = 200; // Remet la vitesse par défaut
 }
 
+// --- GESTION DE LA FIN DE PARTIE ---
+
 void Game::triggerGameOver() {
     state = Game_Over;
     //audio->setTrack(TRACK_MENU); // Musique calme pour le Game Over -> Non fonctionnel : a faire
@@ -171,14 +174,16 @@ void Game::triggerGameOver() {
 }
 
 void Game::updateGameOver() {
-    if (keypad.update() == KeyCode::FOUR) {
+    if (keypad.update() == KeyCode::FIVE) {
         state = Menu; // à revoir
         menuSelection = 0;
-        //drawMainMenu(); pas fonctionnel encore
+        drawMainMenu();
     }
 }
 
-void Game::drawMainMenu()
+// --------- Gestion interface graphique du menu ---------
+
+void Game::drawMainMenu() // décaler l'interface plus au centre
 {
 	display.clearScreen();
 
@@ -186,100 +191,76 @@ void Game::drawMainMenu()
 	display.drawString(40, 30, "POLYSNAKE", Color::GREEN);
 
 	// Boutons
-	display->drawRect(60, 100, 120, 40, COLOR_WHITE);
-	display->drawText(85, 112, "SOLO", COLOR_WHITE, 2);
+	display.drawRect(Color::WHITE,60, 100, 120, 40);
+	display.drawString(85, 112, "SOLO",Color::WHITE);
 
-	display->drawRect(60, 160, 120, 40, COLOR_WHITE);
-	display->drawText(75, 172, "MULTI", COLOR_WHITE, 2);
+	display.drawRect(Color::WHITE,60, 160, 120, 40);
+	display.drawString(75, 172, "MULTI", Color::WHITE);
 
-	drawMenuCursor(menuSelection);
+	drawMenuCursor();
 }
 
-/*void Game::drawMenuCursor(int selection)
+void Game::drawMenuCursor() // doit etre decaler vewrs le centre comme l'interface
 {
 	// Efface l'ancien curseur
-	 display->fillRect(30, 100, 20, 100, COLOR_BLACK);
+	 display.fillRect(Color::BLACK,30, 100, 20, 100);
 
 	 // Dessine le nouveau curseur
-	 int yPos = (selection == 0) ? 112 : 172;
-	 display->drawText(30, yPos, ">", COLOR_RED, 2);
+	 int yPos = (menuSelection == 0) ? 112 : 172;
+	 display.drawString(30, yPos, ">", Color::RED);
 }
 
 void Game::updateMenu(KeyCode key)
 {
-	if (key == KEY_8)
+	if (key == KeyCode::EIGHT)
 	{
 	    menuSelection = 1;
-	    drawMenuCursor(menuSelection);
+	    drawMenuCursor();
 	}
-	else if (key == KEY_2) {
+	else if (key == KeyCode::TWO) {
 	    menuSelection = 0;
-	    drawMenuCursor(menuSelection);
+	    drawMenuCursor();
 	}
-	else if (key == KEY_5) {
-		display->clearScreen();
-	    currentState = (menuSelection == 0) ? STATE_PLAYING_SOLO : STATE_PLAYING_MULTI;
+	else if (key == KeyCode::FIVE) {
+		display.clearScreen();
+	    mode = (menuSelection == 0) ? Solo : Multijoueur;
 
-	    audio->setTrack(TRACK_GAME);
+	    //audio->setTrack(TRACK_GAME); Non fonctionnel à faire
 	    resetGameObjects();
 	    lastMoveTime = HAL_GetTick(); // Réinitialise le chrono pour le jeu
 	}
 }
 
-// --- GESTION DE LA FIN DE PARTIE ---
-void Game::triggerGameOver() {
-    currentState = STATE_GAME_OVER;
-    audio->setTrack(TRACK_MENU); // Musique calme pour le Game Over
-
-    display->clearScreen();
-    display->drawText(40, 100, "GAME OVER", COLOR_RED, 3);
-    display->drawText(20, 180, "Touche 5 pour Menu", COLOR_WHITE, 2);
-}
-
-void Game::updateGameOver(KeyCode key) {
-    if (key == KEY_5) {
-        currentState = STATE_MENU;
-        menuSelection = 0;
-        drawMainMenu();
-    }
-}
-
-void Game::resetGameObjects() {
-    // Aucune fuite mémoire, on réinitialise simplement les variables
-    snake->reset();
-    fruit->reset();
-    gameSpeedDelay = 200; // Remet la vitesse par défaut
-}
-
+/*
 // --- BOUCLE PRINCIPALE ---
 void Game::update() {
     KeyCode key = keypad->getKey();
 
-    switch(currentState) {
-        case STATE_MENU:
+    switch(state) {
+        case Menu:
             updateMenu(key);
             break;
 
-        case STATE_PLAYING_SOLO:
-        case STATE_PLAYING_MULTI:
+		case Multijoeur:
+        case Solo:
 
             // 1. Options (Bascule et Vitesse)
-            if (key == KEY_3) {
+            if (key == KeyCode::THREE) {
                 useAccelerometer = !useAccelerometer;
             }
-            else if (key == KEY_7) {
-                gameSpeedDelay += 20; // Plus lent
+            else if (key == KeyCode::SEVEN) {
+               if (gameSpeedDelay < 500) gameSpeedDelay += 20; // Plus lent
             }
-            else if (key == KEY_9) {
-                if (gameSpeedDelay > 40) gameSpeedDelay -= 20; // Plus rapide
+            else if (key == KeyCode::NINE) {
+                if (gameSpeedDelay > 50) gameSpeedDelay -= 20; // Plus rapide
             }
 
             // 2. Commandes de mouvement
             Direction moveCommand = NONE; // Assure-toi d'avoir NONE dans ton enum Direction
 
             if (useAccelerometer) {
-                float accelX = mpu->getAccelX();
-                float accelY = mpu->getAccelY();
+                float accelX = motionInput.getX();
+                float accelY = motionInput.getY();
 
                 if (accelX > 0.5f) moveCommand = RIGHT;
                 else if (accelX < -0.5f) moveCommand = LEFT;
@@ -312,7 +293,7 @@ void Game::update() {
             }
             break;
 
-        case STATE_GAME_OVER:
+        case Game_Over:
             updateGameOver(key);
             break;
     }

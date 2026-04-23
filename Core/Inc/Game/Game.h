@@ -20,6 +20,7 @@
 namespace ELE3312{
 
 	enum GameState {Init, Menu, Running, Game_Over };
+	enum GameMode {Solo, Multijoueur };
 
 class Game
 {
@@ -43,6 +44,7 @@ private :
 	Snake* snake;
 	//static Snake snake_opponent;
 	GameState state;
+	GameMode mode;
 	//static SnakePayload uart_payload;
 	int menuSelection; // 0 = Solo, 1 = Multi
 
@@ -51,9 +53,11 @@ private :
 	uint32_t gameSpeedDelay;
 	uint32_t lastMoveTime;
 
+
+
 	// Nouvelles méthodes internes
 	void drawMainMenu();
-	void drawMenuCursor(int selection);
+	void drawMenuCursor();
 	void updateMenu(KeyCode key);
 	void triggerGameOver();
 	void updateGameOver();
