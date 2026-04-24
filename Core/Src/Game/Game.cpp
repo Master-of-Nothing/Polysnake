@@ -6,6 +6,7 @@
 #include "Game/Graphics/GraphObjects/Fruit.h"
 
 
+
 using namespace ELE3312;
 
 extern "C"{
@@ -91,18 +92,21 @@ void Game::run(peripheral_handles *handles)
 	//SnakePayload uart_opponent;
  while(1)
  {
-	 /*drawMainMenu();
-	 while(keypad.update() != KeyCode::FIVE)*/ //fonctionne mais a ameliorer
+	 KeyCode key = keypad.update();
+	 drawMainMenu();
+	 while(keypad.update() != KeyCode::FIVE)
+		 updateMenu(keypad.update());
+
 
 	/* if(uart.receiveData(uart_opponent))
 	 {
 		 snake_opponent.turn(uart_opponent.direction);
 	 }*/
 
-	 if(keypad.update() == KeyCode::FOUR)
+	/* if(keypad.update() == KeyCode::FOUR)
 		 snake->turn(WEST);
 	 else if(keypad.update() == KeyCode::SIX)
-		 snake->turn(EAST);
+		 snake->turn(EAST);*/
 
 
 	/* if(keypad.keyPress() == KeyCode::FOUR){
@@ -119,16 +123,16 @@ void Game::run(peripheral_handles *handles)
 //	 uart.sendData(uart_payload);
 
 
-	 if(SnakeCollision_asm(snake->getTampon(),snake->getHead(), snake->getLongueur()))
+	 /*if(SnakeCollision_asm(snake->getTampon(),snake->getHead(), snake->getLongueur()))
 	 	{
 	 		state = Init;
 	 		display.clearScreen();
 	 		continue;
 	 	}
 	 snake->move(eat(*snake,*fruit));
-	 snake->draw();
+	 snake->draw();*/
 	 //snake_opponent.draw();
-	 HAL_Delay(200);
+	 //HAL_Delay(200);
  }
 }
 
@@ -188,14 +192,14 @@ void Game::drawMainMenu() // décaler l'interface plus au centre
 	display.clearScreen();
 
 	// Titre
-	display.drawString(40, 30, "POLYSNAKE", Color::GREEN);
+	display.drawString((display.getScreenWidth()/3)+20, 35, "POLYSNAKE", Color::GREEN);
 
 	// Boutons
 	display.drawRect(Color::WHITE,60, 100, 120, 40);
-	display.drawString(85, 112, "SOLO",Color::WHITE);
+	display.drawString(60 + (120-55)/2, 100 + 25/2, "JOUER",Color::WHITE);
 
 	display.drawRect(Color::WHITE,60, 160, 120, 40);
-	display.drawString(75, 172, "MULTI", Color::WHITE);
+	display.drawString(60 + (120 - 55)/2,160 + 25/2, "MULTI", Color::WHITE);
 
 	drawMenuCursor();
 }
