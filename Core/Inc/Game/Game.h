@@ -1,8 +1,17 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#define MaxWith 200
-#define MaxHeigth 100
+#define MaxWidth 320
+#define MaxHeigth 240
+
+#define ButtonWidth 120
+#define ButtonHeight 40
+#define ButtonX (MaxWidth-ButtonWidth)/2
+#define ButtonY 100
+#define ButtonSpace 60
+#define StringHeight 15
+#define StringX ButtonX + ButtonWidth/2
+#define StringY ButtonY + (ButtonHeigth - StringHeigth)/2
 
 #include "main.h"
 #include "cpp_main.h"
@@ -19,8 +28,8 @@
 
 namespace ELE3312{
 
-	enum GameState {Init, Menu, Running, Game_Over };
-	enum GameMode {Solo, Multijoueur };
+	enum GameState { Init , Menu , Solo , Multijoueur,  Game_Over };
+	//enum GameMode {Solo, Multijoueur };
 
 class Game
 {
@@ -42,9 +51,10 @@ private :
 	//static UartSnakeManager uart;
 	Fruit* fruit;
 	Snake* snake;
+	int moveCommand;
 	//static Snake snake_opponent;
 	GameState state;
-	GameMode mode;
+	//GameMode mode;
 	//static SnakePayload uart_payload;
 	int menuSelection; // 0 = Solo, 1 = Multi
 
@@ -60,9 +70,9 @@ private :
 	void drawMenuCursor();
 	void updateMenu(KeyCode key);
 	void triggerGameOver();
-	void updateGameOver();
+	void updateGameOver(KeyCode key);
 	void resetGameObjects();
-	void collision();
+	bool collision();
 
 };
 
