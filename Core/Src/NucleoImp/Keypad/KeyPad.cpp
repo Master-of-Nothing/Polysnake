@@ -77,14 +77,6 @@ KeyCode KeyPad::update(){
 					keypressed = 1;}
 				if(keypressed) return key = keyboard[row - 1][colum];
 
-				/*if (row == 2 && keysPressed == 4) {
-					keypressed = 1;
-					return key = KeyCode::SIX;
-					}
-				else if (row == 2 && keysPressed == 1) {
-					keypressed = 1;
-					return key = KeyCode::FOUR;
-					}*/
 			}
 	return  key = KeyCode::UNKNOWN;
 }

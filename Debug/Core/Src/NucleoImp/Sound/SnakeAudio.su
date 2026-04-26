@@ -5,13 +5,13 @@
 ../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:78:6:void SnakeAudio::InitTriangleTable()	24	static
 ../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:88:6:void SnakeAudio::Start()	24	static
 ../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:99:6:void SnakeAudio::FillBuffer(uint16_t*)	40	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:147:6:void SnakeAudio::SetVolume(float)	16	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:154:7:float SnakeAudio::GetVolume() const	16	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:158:6:void SnakeAudio::UpdateVolumeFromADC(ADC_HandleTypeDef*)	32	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:181:6:void SnakeAudio::ProcessHalfBuffer()	16	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:185:6:void SnakeAudio::ProcessFullBuffer()	16	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:190:6:void SnakeAudio::UpdateState()	16	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:208:6:void SnakeAudio::setTrack(Track)	16	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:253:10:void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef*)	16	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:258:10:void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef*)	16	static
-../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:262:10:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	16	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:129:6:void SnakeAudio::SetVolume(float)	16	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:136:7:float SnakeAudio::GetVolume() const	16	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:140:6:void SnakeAudio::UpdateVolumeFromADC(ADC_HandleTypeDef*)	32	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:163:6:void SnakeAudio::ProcessHalfBuffer()	16	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:167:6:void SnakeAudio::ProcessFullBuffer()	16	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:172:6:void SnakeAudio::UpdateState()	16	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:190:6:void SnakeAudio::setTrack(Track)	16	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:219:10:void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef*)	16	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:224:10:void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef*)	16	static
+../Core/Src/NucleoImp/Sound/SnakeAudio.cpp:228:10:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	16	static

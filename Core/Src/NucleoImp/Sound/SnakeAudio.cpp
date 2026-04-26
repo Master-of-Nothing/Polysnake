@@ -41,7 +41,7 @@ const Note melodyGameOver[20] = {
     {261.63, 100}, {246.94, 100},  // C4, B3
     {233.08, 100}, {220.00, 100},  // Bb3, A3
     {207.65, 150}, {196.00, 150},  // Ab3, G3
-    {174.61, 300}, {164.81, 800}   // F3, E3 (Note finale très basse)
+    {174.61, 300}, {164.81, 800}   // F3, E3
 };
 
 constexpr uint32_t MELODY_LENGTH = 20;
@@ -97,24 +97,6 @@ void SnakeAudio::Start() {
 
 // fonction permettant de remplir la zone mémoire spécifiée, utiliser pour la double buffer
 void SnakeAudio::FillBuffer(uint16_t* buffer) {
-    /*if (!isPlaying) {
-        for (int i = 0; i < BUFFER_SIZE; i++) {
-        	buffer[i] = 2048; // Silence (milieu du DAC)
-        }
-        return;
-    }
-
-    // Le ratio qui détermine la vitesse de lecture de la table
-    float phaseIncrement = (currentFrequency * TABLE_SIZE) / SAMPLE_RATE;
-
-    for (int i = 0; i < BUFFER_SIZE; i++) {
-        buffer[i] = waveTable[(uint16_t)currentPhase];
-
-        currentPhase += phaseIncrement;
-        if (currentPhase >= TABLE_SIZE) {
-            currentPhase -= TABLE_SIZE; // Assure la continuité de phase
-        }
-    }*/
 	if (!isPlaying) {
 		for (int i = 0; i < BUFFER_SIZE; i++) {
 			buffer[i] = 2048; // Silence
@@ -168,7 +150,7 @@ void SnakeAudio::UpdateVolumeFromADC(ADC_HandleTypeDef *hadc) {
 		// On mappe vers [0.0, 1.0]
 		float newVolume = (float)rawValue / 4095.0f;
 
-		// === FILTRAGE OPTIONNEL ===
+		// FILTRAGE OPTIONNEL
 		// Un léger lissage évite les clics audio si le potentiomètre
 		// est bruité. Coefficient faible = changement lent et doux.
 		const float VOL_ALPHA = 1.0f;
@@ -207,22 +189,6 @@ void SnakeAudio::UpdateState() {
 
 void SnakeAudio::setTrack(Track trackName)
 {
-/*
-	// A modifier car
-	if (trackName == TRACK_MENU) {
-	        son = melodyMenu; // Remplace par ta variable de tableau actif
-	        //currentMelodyLength = sizeof(melodyMenu) / sizeof(float);
-	    }
-	    else if (trackName == TRACK_GAME) {
-	        son = melody;
-	        //currentMelodyLength = sizeof(melodyGame) / sizeof(float);
-	    }
-	    else if (trackName == TRACK_GAME_OVER) {
-	    	son = melodyGameOver;
-	    	//currentMelodyLength = sizeof(melodyGame) / sizeof(float);
-	    }
-	    currentNoteIndex = 0; // Recommence au début de la piste
-*/
 	// Change le pointeur vers la mélodie appropriée
 	switch(trackName) {
 	case TRACK_MENU:

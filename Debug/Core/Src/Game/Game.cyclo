@@ -2,13 +2,13 @@ C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.external
 ../Core/Src/Game/Game.cpp:19:5:int eat(ELE3312::Snake&, ELE3312::Fruit&)	9
 ../Core/Src/Game/Game.cpp:53:1:ELE3312::Game::Game()	1
 ../Core/Src/Game/Game.cpp:56:6:void ELE3312::Game::setup(peripheral_handles*)	3
-../Core/Src/Game/Game.cpp:89:6:void ELE3312::Game::run(peripheral_handles*)	20
-../Core/Src/Game/Game.cpp:228:6:bool ELE3312::Game::collision()	10
-../Core/Src/Game/Game.cpp:257:6:void ELE3312::Game::resetGameObjects()	1
-../Core/Src/Game/Game.cpp:271:6:void ELE3312::Game::triggerGameOver()	1
-../Core/Src/Game/Game.cpp:280:6:void ELE3312::Game::updateGameOver(ELE3312::KeyCode)	2
-../Core/Src/Game/Game.cpp:295:6:void ELE3312::Game::drawMainMenu()	1
-../Core/Src/Game/Game.cpp:312:6:void ELE3312::Game::drawMenuCursor()	2
-../Core/Src/Game/Game.cpp:322:6:void ELE3312::Game::updateMenu(ELE3312::KeyCode)	5
-../Core/Src/Game/Game.cpp:343:6:void ELE3312::Game::usingAccelero()	9
+../Core/Src/Game/Game.cpp:88:6:void ELE3312::Game::run(peripheral_handles*)	20
+../Core/Src/Game/Game.cpp:175:6:bool ELE3312::Game::collision()	10
+../Core/Src/Game/Game.cpp:204:6:void ELE3312::Game::resetGameObjects()	1
+../Core/Src/Game/Game.cpp:218:6:void ELE3312::Game::triggerGameOver()	1
+../Core/Src/Game/Game.cpp:227:6:void ELE3312::Game::updateGameOver(ELE3312::KeyCode)	2
+../Core/Src/Game/Game.cpp:242:6:void ELE3312::Game::drawMainMenu()	1
+../Core/Src/Game/Game.cpp:259:6:void ELE3312::Game::drawMenuCursor()	2
+../Core/Src/Game/Game.cpp:269:6:void ELE3312::Game::updateMenu(ELE3312::KeyCode)	5
+../Core/Src/Game/Game.cpp:292:6:void ELE3312::Game::usingAccelero()	9
 C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344\tools\arm-none-eabi\include\c++\13.3.1\bits\new_allocator.h:104:7:std::__new_allocator<_Tp>::~__new_allocator() [with _Tp = char]	1

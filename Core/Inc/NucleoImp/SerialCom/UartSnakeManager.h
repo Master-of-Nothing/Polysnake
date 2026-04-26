@@ -45,7 +45,6 @@ private :
 
 }
 
-// Instance globale accessible partout
 //extern UartSnakeManager uartManager;
 
 #endif // UARTSNAKEMANAGER_H

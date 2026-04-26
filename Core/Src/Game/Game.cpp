@@ -58,7 +58,7 @@ void Game::setup(peripheral_handles *handles)
 	this->handles = handles;
 	display.setup(handles->hspi_tft);
 	display.clearScreen();
-	keypad.setup(handles->gpio_keypad); //On utilise pas le fichier Keypad pour l'instant
+	keypad.setup(handles->gpio_keypad);
 	motionInput.setup(handles->hi2c);
 	//uart.setup(handles->huart);
 	audio.Init(handles->hdac,handles->htim_dac,SnakeAudio::SQUARE);
@@ -67,19 +67,18 @@ void Game::setup(peripheral_handles *handles)
 
 	if(this->fruit == nullptr)
 		this->fruit = new Fruit(&display);
-	//fruit->draw();
 	if(this->snake == nullptr)
 		this->snake = new Snake(&display);
-	//snake->draw();
+
 	//Snake snake_opponent(&display);
 	//snake_opponent.draw();
 	//uart_payload.player_id = uart.negotiatePlayerId();
 	//audio->setTrack(TRACK_MENU); // Lance la musique du menu
 	//drawMainMenu();
 
-	//menuSelection = 0;
-	//useAccelerometer = false;
-	//gameSpeedDelay = 200; // Vitesse initiale (200ms)
+	menuSelection = 0;
+	useAccelerometer = false;
+	gameSpeedDelay = 200; // Vitesse initiale (200ms)
 	lastMoveTime = HAL_GetTick();
 
 	this->state = Menu;
@@ -118,6 +117,7 @@ void Game::run(peripheral_handles *handles)
 
 	 case Solo :
          // 1. Options (Bascule et Vitesse)
+
          if (key == KeyCode::THREE) {
              useAccelerometer = !useAccelerometer;
          }
@@ -133,47 +133,30 @@ void Game::run(peripheral_handles *handles)
         	 key = keypad.update();
          }
 
-         moveCommand = NONE; // Assure-toi d'avoir NONE dans ton enum Direction
-                 	 if (useAccelerometer)
-                 	 {
-                 		 usingAccelero();
-                 		/* motionInput.update();
-                 		 float accelX = motionInput.getX();
-                 		 float accelY = motionInput.getY();
-                 		 if (accelX > 0.5f)
-                 			 moveCommand = EAST;
-                 		 else if (accelX < -0.5f)
-                 			 moveCommand = WEST;
-                 		 else if (accelY > 0.5f)
-                 			 moveCommand = NORTH;
-                 		 else if (accelY < -0.5f)
-                 			 moveCommand = SOUTH;*/
-                 	 } else
-                 	 {
-                 		 if(key == KeyCode::FOUR)
-                 			 moveCommand = WEST;
-                 		 else if(key == KeyCode::SIX)
-                 			 moveCommand = EAST;
-                 	 }
+         moveCommand = NONE;
+         if (useAccelerometer)
+         {
+        	 usingAccelero();
+         } else
+         {
+        	 if(key == KeyCode::FOUR)
+        		 moveCommand = WEST;
+        	 else if(key == KeyCode::SIX)
+        		 moveCommand = EAST;
+         }
 
          // 3. Déplacement cadencé par le timer non bloquant
+
          if ((HAL_GetTick() - lastMoveTime) >= gameSpeedDelay)
          {
 
         	 if (moveCommand != NONE) {
         		 snake->turn(moveCommand);
         	 }
-        	 // Si c'est un demi-tour → on ignore silencieusement
-			 // le serpent continue tout droit
-
-             /*if (moveCommand != NONE) {
-            	 snake->turn(moveCommand);
-             }*/
 
              snake->move(eat(*snake,*fruit));
 
              snake->draw();
-             //fruit->draw();
 
              if (collision()) {
                  triggerGameOver();
@@ -186,42 +169,6 @@ void Game::run(peripheral_handles *handles)
 		 updateGameOver(key);
 		 break;
 	 }
-
-	/* if(uart.receiveData(uart_opponent))
-	 {
-		 snake_opponent.turn(uart_opponent.direction);
-	 }*/
-
-	/* if(keypad.update() == KeyCode::FOUR)
-		 snake->turn(WEST);
-	 else if(keypad.update() == KeyCode::SIX)
-		 snake->turn(EAST);*/
-
-
-	/* if(keypad.keyPress() == KeyCode::FOUR){
-		 snake->turn(WEST);
-		//uart_payload.direction = WEST;
-	 }
-	 else if(keypad.keyPress() == KeyCode::SIX){
-		 snake->turn(EAST);
-		 //uart_payload.direction = EAST;
-	 }*/
-//	 tile *tampon = snake.getTampon();
-//	 uart_payload.head_x = tampon[snake->getHead()].x;
-//	 uart_payload.head_y = tampon[snake->getHead()].y;
-//	 uart.sendData(uart_payload);
-
-
-	 /*if(SnakeCollision_asm(snake->getTampon(),snake->getHead(), snake->getLongueur()))
-	 	{
-	 		state = Init;
-	 		display.clearScreen();
-	 		continue;
-	 	}
-	 snake->move(eat(*snake,*fruit));
-	 snake->draw();*/
-	 //snake_opponent.draw();
-	 //HAL_Delay(200);
  }
 }
 
@@ -234,19 +181,19 @@ bool Game::collision() // A compléter
 	{
 		case NORTH :
 			if(tampon[head].y - TILE_SIZE  < 0)
-				return 1;////
+				return 1;
 			break;
 		case EAST :
 			if(tampon[head].x + TILE_SIZE > 320  )
-				return 1;///
+				return 1;
 			break;
 		case SOUTH :
 			if(tampon[head].y + TILE_SIZE > 240 )
-				return 1;//
-			break;//
+				return 1;
+			break;
 		case  WEST :
 			if(tampon[head].x - TILE_SIZE < 0)
-				return 1;///
+				return 1;
 			break;
 	}
 	if(SnakeCollision_asm(snake->getTampon(),snake->getHead(), snake->getLongueur()))
@@ -255,7 +202,7 @@ bool Game::collision() // A compléter
 }
 
 void Game::resetGameObjects() {
-    // Aucune fuite mémoire, on réinitialise simplement les variables
+    // on ne veut pas de fuite mémoire, on réinitialise simplement les variables
     snake->reset();
     fruit->reset();
     gameSpeedDelay = 200; // Remet la vitesse par défaut
@@ -270,21 +217,21 @@ void Game::resetGameObjects() {
 
 void Game::triggerGameOver() {
     state = Game_Over;
-    audio.setTrack(TRACK_GAME_OVER);  // === AJOUTER : Lance la musique de game over ===
+    audio.setTrack(TRACK_GAME_OVER);
 
     display.clearScreen();
-    display.drawString( (MaxWidth- (9*11))/2 , 100, "GAME OVER", Color::RED);//drawString(40, 100, "GAME OVER", COLOR_RED, 3);
-    display.drawString( (MaxWidth- (23*11))/2 , 180, "Appuyer sur la Touche 5", Color::WHITE); // drawString(20, 180, "Touche 5 pour Menu", COLOR_WHITE, 2);
+    display.drawString( (MaxWidth- (9*11))/2 , 100, "GAME OVER", Color::RED);
+    display.drawString( (MaxWidth- (23*11))/2 , 180, "Appuyer sur la Touche 5", Color::WHITE);
 }
 
 void Game::updateGameOver(KeyCode key) {
     if (key == KeyCode::FIVE) {
-        state = Menu; // à revoir
+        state = Menu;
         menuSelection = 0;
         display.clearScreen();
         resetGameObjects();
 
-        audio.setTrack(TRACK_MENU);  // === AJOUTER : Retour à la musique du menu ===
+        audio.setTrack(TRACK_MENU);
 
         drawMainMenu();
     }
@@ -334,11 +281,13 @@ void Game::updateMenu(KeyCode key) // fonctionne parfaitement
 		display.clearScreen();
 	    state = (menuSelection == 0) ? Solo : Multijoueur;
 
-	    audio.setTrack(TRACK_GAME);  // === AJOUTER : Lance la musique du jeu ===
+	    audio.setTrack(TRACK_GAME);
 	    resetGameObjects();
 	    lastMoveTime = HAL_GetTick(); // Réinitialise le chrono pour le jeu
 	}
 }
+
+// --------- Gestion accelerometre du jeu ---------
 
 void Game::usingAccelero()
 {
@@ -346,106 +295,31 @@ void Game::usingAccelero()
 	float rawX = motionInput.getX();
 	float rawY = motionInput.getY();
 
-	// === FILTRE PASSE-BAS (lissage exponentiel) ===
+	// FILTRE PASSE-BAS (lissage exponentiel)
 	// ALPHA contrôle la réactivité :
-	//   - Proche de 1.0 → très réactif mais bruité (comportement actuel)
-	//   - Proche de 0.0 → très lisse mais lent
-	//   - 0.15 est un bon compromis pour un accéléromètre de jeu
 	const float ALPHA = 0.7f;
 	filteredAccX = ALPHA * rawX + (1.0f - ALPHA) * filteredAccX;
 	filteredAccY = ALPHA * rawY + (1.0f - ALPHA) * filteredAccY;
 
-	// === SEUIL ET AXE DOMINANT ===
+	// SEUIL ET AXE DOMINANT
 	// On utilise les valeurs absolues pour trouver l'axe
 	// sur lequel l'inclinaison est la plus prononcée.
 	float absX = (filteredAccX < 0.0f) ? -filteredAccX : filteredAccX;
 	float absY = (filteredAccY < 0.0f) ? -filteredAccY : filteredAccY;
 
 	// Seuil minimum d'inclinaison pour déclencher un mouvement.
-	// À 0.4g, la carte doit être inclinée d'environ 24°.
-	// Augmente cette valeur si encore trop sensible (ex: 0.5f ou 0.6f).
 	const float THRESHOLD = 0.7f;
 
-	// On ne génère une commande que si l'axe dominant
-	// dépasse le seuil. Cela évite les faux positifs
-	// en zone neutre (carte quasi-plate).
+	// On ne génère une commande que si l'axe dominant dépasse le seuil.
 	if (absX > absY && absX > THRESHOLD) {
 		// L'axe X est dominant : mouvement EAST ou WEST
-		moveCommand = (filteredAccX > 0.0f) ? EAST : WEST;
+		moveCommand = (filteredAccX > 0.0f) ? WEST : EAST;
 	} else if (absY > absX && absY > THRESHOLD) {
 		// L'axe Y est dominant : mouvement NORTH ou SOUTH
-		moveCommand = (filteredAccY > 0.0f) ? NORTH : SOUTH;
+		moveCommand = (filteredAccY > 0.0f) ? SOUTH : NORTH;
 	}
-	// Si aucun axe ne dépasse le seuil → moveCommand reste NONE
-	// → le serpent continue tout droit
 
 }
 
-/*
-// --- BOUCLE PRINCIPALE ---
-void Game::update() {
-    KeyCode key = keypad->getKey();
 
-    switch(state) {
-        case Menu:
-            updateMenu(key);
-            break;
-
-		case Multijoeur:
-        case Solo:
-
-            // 1. Options (Bascule et Vitesse)
-            if (key == KeyCode::THREE) {
-                useAccelerometer = !useAccelerometer;
-            }
-            else if (key == KeyCode::SEVEN) {
-               if (gameSpeedDelay < 500) gameSpeedDelay += 20; // Plus lent
-            }
-            else if (key == KeyCode::NINE) {
-                if (gameSpeedDelay > 50) gameSpeedDelay -= 20; // Plus rapide
-            }
-
-            // 2. Commandes de mouvement
-            Direction moveCommand = NONE; // Assure-toi d'avoir NONE dans ton enum Direction
-
-            if (useAccelerometer) {
-                float accelX = motionInput.getX();
-                float accelY = motionInput.getY();
-
-                if (accelX > 0.5f) moveCommand = RIGHT;
-                else if (accelX < -0.5f) moveCommand = LEFT;
-                else if (accelY > 0.5f) moveCommand = UP;
-                else if (accelY < -0.5f) moveCommand = DOWN;
-            } else {
-                if (key == KEY_4) moveCommand = LEFT;
-                else if (key == KEY_6) moveCommand = RIGHT;
-                else if (key == KEY_2) moveCommand = UP;
-                else if (key == KEY_8) moveCommand = DOWN;
-            }
-
-            // 3. Déplacement cadencé par le timer non bloquant
-            if ((HAL_GetTick() - lastMoveTime) >= gameSpeedDelay) {
-
-                if (moveCommand != NONE) {
-                    snake->changeDirection(moveCommand);
-                }
-
-                snake->move();
-
-                snake->draw(display);
-                fruit->draw(display);
-
-                if (snake->checkCollision()) {
-                    triggerGameOver();
-                }
-
-                lastMoveTime = HAL_GetTick();
-            }
-            break;
-
-        case Game_Over:
-            updateGameOver(key);
-            break;
-    }
-}*/
 

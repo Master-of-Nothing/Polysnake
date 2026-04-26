@@ -55,7 +55,7 @@ private :
 	GameState state;
 	//GameMode mode;
 	//static SnakePayload uart_payload;
-	int menuSelection; // 0 = Solo, 1 = Multi
+	int menuSelection; // Solo = 0, Multi = 1
 
 	// Variables pour les options en jeu
 	bool useAccelerometer;

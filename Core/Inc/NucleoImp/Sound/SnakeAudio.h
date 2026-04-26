@@ -10,7 +10,7 @@ constexpr uint16_t TABLE_SIZE = 512;    // Taille de la période d'une onde
 constexpr uint16_t BUFFER_SIZE = 256;   // Taille d'UN seul buffer (la moitié du tableau DMA)
 
 
-// Structure représentant quel musique joué en fonction de la machine à état
+// Structure représentant quel musique est joué en fonction de la machine à état
 enum Track {
     TRACK_MENU,
     TRACK_GAME,
@@ -47,15 +47,11 @@ public:
 
     void UpdateVolumeFromADC(ADC_HandleTypeDef *hadc);
 
-    /*
-    Fixe le volume directement (sans ADC).
-    vol Valeur entre 0.0f (silence) et 1.0f (plein volume).
-    */
+    //Fixe le volume directement (sans ADC). vol Valeur entre 0.0f (silence) et 1.0f (plein volume).
     void SetVolume(float vol);
 
 
     //Retourne le volume actuel (utile pour l'afficher à l'écran).
-
     float GetVolume() const;
 
 private:

@@ -54,7 +54,7 @@ uint8_t UartSnakeManager::negotiatePlayerId() {
         }
     }
 
-    // 4. Déterminer qui est qui mathématiquement
+    // 4. Déterminer qui est qui
     if (my_uid > opponent_uid) {
         assigned_id = 1;
     } else if (my_uid < opponent_uid) {
