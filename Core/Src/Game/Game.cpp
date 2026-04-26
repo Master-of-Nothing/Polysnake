@@ -50,7 +50,7 @@ int eat(Snake& snake, Fruit& fruit)
 	return eat;
 }
 
-Game::Game() : state(Init), filteredAccX(0.0f), filteredAccY(0.0f){
+Game::Game() : state(Init), filteredAccX(0.0f), filteredAccY(0.0f), gameSpeedDelay(200),useAccelerometer(false), menuSelection(0), moveCommand(NONE) {
 }
 
 void Game::setup(peripheral_handles *handles)
@@ -62,6 +62,7 @@ void Game::setup(peripheral_handles *handles)
 	motionInput.setup(handles->hi2c);
 	//uart.setup(handles->huart);
 	audio.Init(handles->hdac,handles->htim_dac,SnakeAudio::SQUARE);
+	audio.setTrack(TRACK_MENU);
 	audio.Start();
 
 	if(this->fruit == nullptr)
@@ -76,9 +77,9 @@ void Game::setup(peripheral_handles *handles)
 	//audio->setTrack(TRACK_MENU); // Lance la musique du menu
 	//drawMainMenu();
 
-	menuSelection = 0;
-	useAccelerometer = false;
-	gameSpeedDelay = 200; // Vitesse initiale (200ms)
+	//menuSelection = 0;
+	//useAccelerometer = false;
+	//gameSpeedDelay = 200; // Vitesse initiale (200ms)
 	lastMoveTime = HAL_GetTick();
 
 	this->state = Menu;
@@ -98,18 +99,22 @@ void Game::run(peripheral_handles *handles)
 	 {
 	 case Init :
 		 setup(handles);
+		 break;
 	 case Menu :
 		 drawMainMenu();
 		 	 while(keypad.update() != KeyCode::FIVE)
 		 	 {
+		 		 audio.UpdateVolumeFromADC(handles->hadc);
 		 		 updateMenu(keypad.update());
 		 	 }
 		 	 display.clearScreen();
 		 	fruit->draw();
 		 	snake->draw();
+		 	break;
 
 	 case Multijoueur : // Non fonctionnel
 		 state = Solo;
+		 break;
 
 	 case Solo :
          // 1. Options (Bascule et Vitesse)
@@ -230,15 +235,19 @@ bool Game::collision() // A compléter
 		case NORTH :
 			if(tampon[head].y - TILE_SIZE  < 0)
 				return 1;////
+			break;
 		case EAST :
 			if(tampon[head].x + TILE_SIZE > 320  )
 				return 1;///
+			break;
 		case SOUTH :
 			if(tampon[head].y + TILE_SIZE > 240 )
-				return 1;///
+				return 1;//
+			break;//
 		case  WEST :
 			if(tampon[head].x - TILE_SIZE < 0)
 				return 1;///
+			break;
 	}
 	if(SnakeCollision_asm(snake->getTampon(),snake->getHead(), snake->getLongueur()))
 		return 1;
@@ -261,7 +270,7 @@ void Game::resetGameObjects() {
 
 void Game::triggerGameOver() {
     state = Game_Over;
-    //audio->setTrack(TRACK_MENU); // Musique calme pour le Game Over -> Non fonctionnel : a faire
+    audio.setTrack(TRACK_GAME_OVER);  // === AJOUTER : Lance la musique de game over ===
 
     display.clearScreen();
     display.drawString( (MaxWidth- (9*11))/2 , 100, "GAME OVER", Color::RED);//drawString(40, 100, "GAME OVER", COLOR_RED, 3);
@@ -274,6 +283,9 @@ void Game::updateGameOver(KeyCode key) {
         menuSelection = 0;
         display.clearScreen();
         resetGameObjects();
+
+        audio.setTrack(TRACK_MENU);  // === AJOUTER : Retour à la musique du menu ===
+
         drawMainMenu();
     }
 }
@@ -322,7 +334,7 @@ void Game::updateMenu(KeyCode key) // fonctionne parfaitement
 		display.clearScreen();
 	    state = (menuSelection == 0) ? Solo : Multijoueur;
 
-	    //audio->setTrack(TRACK_GAME); Non fonctionnel à faire
+	    audio.setTrack(TRACK_GAME);  // === AJOUTER : Lance la musique du jeu ===
 	    resetGameObjects();
 	    lastMoveTime = HAL_GetTick(); // Réinitialise le chrono pour le jeu
 	}

@@ -46,7 +46,7 @@ const Note melodyGameOver[20] = {
 
 constexpr uint32_t MELODY_LENGTH = 20;
 
-SnakeAudio::SnakeAudio() : currentPhase(0.0f), currentFrequency(0.0f), volume(1.0f), noteTimer(0), currentNoteIndex(0), isPlaying(false) {
+SnakeAudio::SnakeAudio() : currentPhase(0.0f), currentFrequency(0.0f), volume(1.0f), noteTimer(0), currentNoteIndex(0), isPlaying(false), currentMelody(melodyMenu){
 	g_SnakeAudio = this; // Assigne l'instance en cours au pointeur global, test : fonctionne bien
 }
 
@@ -87,8 +87,8 @@ void SnakeAudio::InitTriangleTable() {
 
 void SnakeAudio::Start() {
     currentNoteIndex = 0;
-    noteTimer = melody[0].duration_ms;
-    currentFrequency = melody[0].frequency;
+    noteTimer = currentMelody[0].duration_ms;
+    currentFrequency = currentMelody[0].frequency;
     isPlaying = true;
 
     // Lancement du transfert DMA sur la totalité du tableau (les 2 buffers en même temps), dma est mit en option circulaire
@@ -199,8 +199,8 @@ void SnakeAudio::UpdateState() {
         }
 
         // Change la fréquence pour la prochaine exécution de FillBuffer
-        currentFrequency = melody[currentNoteIndex].frequency;
-        noteTimer = melody[currentNoteIndex].duration_ms;
+        currentFrequency = currentMelody[currentNoteIndex].frequency;
+        noteTimer = currentMelody[currentNoteIndex].duration_ms;
     }
 
 }
@@ -223,6 +223,26 @@ void SnakeAudio::setTrack(Track trackName)
 	    }
 	    currentNoteIndex = 0; // Recommence au début de la piste
 */
+	// Change le pointeur vers la mélodie appropriée
+	switch(trackName) {
+	case TRACK_MENU:
+		currentMelody = melodyMenu;
+		break;
+	case TRACK_GAME:
+		currentMelody = melody;  // La mélodie Tetris
+		break;
+	case TRACK_GAME_OVER:
+		currentMelody = melodyGameOver;
+		break;
+	default:
+		currentMelody = melody;  // Fallback sécurisé
+		break;
+	}
+
+	// Recommence au début de la nouvelle piste
+	currentNoteIndex = 0;
+	noteTimer = currentMelody[0].duration_ms;
+	currentFrequency = currentMelody[0].frequency;
 }
 
 // =========================================================================

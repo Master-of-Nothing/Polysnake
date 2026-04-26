@@ -59,22 +59,23 @@ public:
     float GetVolume() const;
 
 private:
-    DAC_HandleTypeDef *hdac;
-    TIM_HandleTypeDef *htim;
+    DAC_HandleTypeDef *hdac = nullptr;
+    TIM_HandleTypeDef *htim = nullptr;
 
     constexpr static float pi{3.1415926535f};
 
     uint16_t waveTable[TABLE_SIZE];          // Échantillons d'une période
     uint16_t dmaBuffer[BUFFER_SIZE * 2];     // Le double buffer continu (étape 1)
 
-    //const Note *son;
     float currentPhase;                      // Phase courante pour la continuité
     volatile float currentFrequency;         // Fréquence modifiée par la machine à états
     volatile float volume;
 
     uint32_t noteTimer;
     uint32_t currentNoteIndex;
+
     volatile bool isPlaying;
+    const Note* currentMelody;
 
     // Fonctions internes d'initialisation des formes d'ondes
     void InitSineTable();

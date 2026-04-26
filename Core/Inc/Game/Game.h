@@ -48,8 +48,8 @@ private :
 	MPU6050MotionInput motionInput;
 	SnakeAudio audio;
 	//static UartSnakeManager uart;
-	Fruit* fruit;
-	Snake* snake;
+	Fruit* fruit = nullptr;
+	Snake* snake = nullptr;
 	int moveCommand;
 	//static Snake snake_opponent;
 	GameState state;
