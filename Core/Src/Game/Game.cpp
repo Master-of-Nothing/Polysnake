@@ -50,7 +50,7 @@ int eat(Snake& snake, Fruit& fruit)
 	return eat;
 }
 
-Game::Game() : state(Init){
+Game::Game() : state(Init), filteredAccX(0.0f), filteredAccY(0.0f){
 }
 
 void Game::setup(peripheral_handles *handles)
@@ -93,6 +93,7 @@ void Game::run(peripheral_handles *handles)
  while(1)
  {
 	 KeyCode key = keypad.update();
+	 audio.UpdateVolumeFromADC(handles->hadc);
 	 switch(state)
 	 {
 	 case Init :
@@ -100,7 +101,9 @@ void Game::run(peripheral_handles *handles)
 	 case Menu :
 		 drawMainMenu();
 		 	 while(keypad.update() != KeyCode::FIVE)
+		 	 {
 		 		 updateMenu(keypad.update());
+		 	 }
 		 	 display.clearScreen();
 		 	fruit->draw();
 		 	snake->draw();
@@ -109,7 +112,6 @@ void Game::run(peripheral_handles *handles)
 		 state = Solo;
 
 	 case Solo :
-
          // 1. Options (Bascule et Vitesse)
          if (key == KeyCode::THREE) {
              useAccelerometer = !useAccelerometer;
@@ -126,34 +128,42 @@ void Game::run(peripheral_handles *handles)
         	 key = keypad.update();
          }
 
-         // 2. Commandes de mouvement
          moveCommand = NONE; // Assure-toi d'avoir NONE dans ton enum Direction
-
-         if (useAccelerometer) {
-        	 motionInput.update();
-             float accelX = motionInput.getX();
-             float accelY = motionInput.getY();
-             if (accelX > 0.5f)
-            	 moveCommand = EAST;
-             else if (accelX < -0.5f)
-            	 moveCommand = WEST;
-             else if (accelY > 0.5f)
-            	 moveCommand = NORTH;
-             else if (accelY < -0.5f)
-            	 moveCommand = SOUTH;
-         } else {
-        	 if(key == KeyCode::FOUR)
-        	 		 moveCommand = WEST;
-        	 else if(key == KeyCode::SIX)
-        	 		 moveCommand = EAST;
-         }
+                 	 if (useAccelerometer)
+                 	 {
+                 		 usingAccelero();
+                 		/* motionInput.update();
+                 		 float accelX = motionInput.getX();
+                 		 float accelY = motionInput.getY();
+                 		 if (accelX > 0.5f)
+                 			 moveCommand = EAST;
+                 		 else if (accelX < -0.5f)
+                 			 moveCommand = WEST;
+                 		 else if (accelY > 0.5f)
+                 			 moveCommand = NORTH;
+                 		 else if (accelY < -0.5f)
+                 			 moveCommand = SOUTH;*/
+                 	 } else
+                 	 {
+                 		 if(key == KeyCode::FOUR)
+                 			 moveCommand = WEST;
+                 		 else if(key == KeyCode::SIX)
+                 			 moveCommand = EAST;
+                 	 }
 
          // 3. Déplacement cadencé par le timer non bloquant
-         if ((HAL_GetTick() - lastMoveTime) >= gameSpeedDelay) {
+         if ((HAL_GetTick() - lastMoveTime) >= gameSpeedDelay)
+         {
 
-             if (moveCommand != NONE) {
-                 snake->turn(moveCommand);
-             }
+        	 if (moveCommand != NONE) {
+        		 snake->turn(moveCommand);
+        	 }
+        	 // Si c'est un demi-tour → on ignore silencieusement
+			 // le serpent continue tout droit
+
+             /*if (moveCommand != NONE) {
+            	 snake->turn(moveCommand);
+             }*/
 
              snake->move(eat(*snake,*fruit));
 
@@ -167,10 +177,9 @@ void Game::run(peripheral_handles *handles)
              lastMoveTime = HAL_GetTick();
          }
          break;
-
-     case Game_Over:
-         updateGameOver(key);
-         break;
+	 case Game_Over:
+		 updateGameOver(key);
+		 break;
 	 }
 
 	/* if(uart.receiveData(uart_opponent))
@@ -241,6 +250,11 @@ void Game::resetGameObjects() {
     snake->reset();
     fruit->reset();
     gameSpeedDelay = 200; // Remet la vitesse par défaut
+    // Réinitialise le filtre pour ne pas partir avec une
+    // valeur résiduelle de la partie précédente
+    filteredAccX = 0.0f;
+    filteredAccY = 0.0f;
+    useAccelerometer = 0;
 }
 
 // --- GESTION DE LA FIN DE PARTIE ---
@@ -312,6 +326,47 @@ void Game::updateMenu(KeyCode key) // fonctionne parfaitement
 	    resetGameObjects();
 	    lastMoveTime = HAL_GetTick(); // Réinitialise le chrono pour le jeu
 	}
+}
+
+void Game::usingAccelero()
+{
+	motionInput.update();
+	float rawX = motionInput.getX();
+	float rawY = motionInput.getY();
+
+	// === FILTRE PASSE-BAS (lissage exponentiel) ===
+	// ALPHA contrôle la réactivité :
+	//   - Proche de 1.0 → très réactif mais bruité (comportement actuel)
+	//   - Proche de 0.0 → très lisse mais lent
+	//   - 0.15 est un bon compromis pour un accéléromètre de jeu
+	const float ALPHA = 0.7f;
+	filteredAccX = ALPHA * rawX + (1.0f - ALPHA) * filteredAccX;
+	filteredAccY = ALPHA * rawY + (1.0f - ALPHA) * filteredAccY;
+
+	// === SEUIL ET AXE DOMINANT ===
+	// On utilise les valeurs absolues pour trouver l'axe
+	// sur lequel l'inclinaison est la plus prononcée.
+	float absX = (filteredAccX < 0.0f) ? -filteredAccX : filteredAccX;
+	float absY = (filteredAccY < 0.0f) ? -filteredAccY : filteredAccY;
+
+	// Seuil minimum d'inclinaison pour déclencher un mouvement.
+	// À 0.4g, la carte doit être inclinée d'environ 24°.
+	// Augmente cette valeur si encore trop sensible (ex: 0.5f ou 0.6f).
+	const float THRESHOLD = 0.7f;
+
+	// On ne génère une commande que si l'axe dominant
+	// dépasse le seuil. Cela évite les faux positifs
+	// en zone neutre (carte quasi-plate).
+	if (absX > absY && absX > THRESHOLD) {
+		// L'axe X est dominant : mouvement EAST ou WEST
+		moveCommand = (filteredAccX > 0.0f) ? EAST : WEST;
+	} else if (absY > absX && absY > THRESHOLD) {
+		// L'axe Y est dominant : mouvement NORTH ou SOUTH
+		moveCommand = (filteredAccY > 0.0f) ? NORTH : SOUTH;
+	}
+	// Si aucun axe ne dépasse le seuil → moveCommand reste NONE
+	// → le serpent continue tout droit
+
 }
 
 /*

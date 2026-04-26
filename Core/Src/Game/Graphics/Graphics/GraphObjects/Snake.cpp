@@ -189,8 +189,8 @@ void Snake::reset()
 	this -> tail = 1;
 	this -> longueur = this->getLongueur();
 	this -> LastDirection = EAST;
-	int xInit = (rand() % 31) * 10;//10;
-	int yInit = (rand() % 23) * 10;//10;
+	int xInit = 60; //(rand() % 31) * 10;//10;
+	int yInit = 120;//(rand() % 23) * 10;//10;
 		for (int i = 0; i < MaxLength; i++)
 	    	{
 	        tampon[i].x = 0;

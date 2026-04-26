@@ -13,7 +13,8 @@ constexpr uint16_t BUFFER_SIZE = 256;   // Taille d'UN seul buffer (la moitié d
 // Structure représentant quel musique joué en fonction de la machine à état
 enum Track {
     TRACK_MENU,
-    TRACK_GAME
+    TRACK_GAME,
+	TRACK_GAME_OVER
 };
 
 // Structure représentant une note de musique
@@ -44,6 +45,19 @@ public:
     // Méthode pour changer la musique en cours
     void setTrack(Track trackName);
 
+    void UpdateVolumeFromADC(ADC_HandleTypeDef *hadc);
+
+    /*
+    Fixe le volume directement (sans ADC).
+    vol Valeur entre 0.0f (silence) et 1.0f (plein volume).
+    */
+    void SetVolume(float vol);
+
+
+    //Retourne le volume actuel (utile pour l'afficher à l'écran).
+
+    float GetVolume() const;
+
 private:
     DAC_HandleTypeDef *hdac;
     TIM_HandleTypeDef *htim;
@@ -53,8 +67,10 @@ private:
     uint16_t waveTable[TABLE_SIZE];          // Échantillons d'une période
     uint16_t dmaBuffer[BUFFER_SIZE * 2];     // Le double buffer continu (étape 1)
 
+    //const Note *son;
     float currentPhase;                      // Phase courante pour la continuité
     volatile float currentFrequency;         // Fréquence modifiée par la machine à états
+    volatile float volume;
 
     uint32_t noteTimer;
     uint32_t currentNoteIndex;

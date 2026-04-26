@@ -29,7 +29,6 @@
 namespace ELE3312{
 
 	enum GameState { Init , Menu , Solo , Multijoueur,  Game_Over };
-	//enum GameMode {Solo, Multijoueur };
 
 class Game
 {
@@ -63,16 +62,23 @@ private :
 	uint32_t gameSpeedDelay;
 	uint32_t lastMoveTime;
 
+	float filteredAccX;   // Valeur filtrée de l'accéléromètre X
+	float filteredAccY;   // Valeur filtrée de l'accéléromètre Y
+
 
 
 	// Nouvelles méthodes internes
+	void usingAccelero();
+	bool collision();
+
 	void drawMainMenu();
 	void drawMenuCursor();
 	void updateMenu(KeyCode key);
+
 	void triggerGameOver();
 	void updateGameOver(KeyCode key);
 	void resetGameObjects();
-	bool collision();
+
 
 };
 
